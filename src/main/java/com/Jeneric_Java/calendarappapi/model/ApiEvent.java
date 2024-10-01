@@ -1,6 +1,9 @@
 package com.Jeneric_Java.calendarappapi.model;
 
-public record ApiEvent() {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public record ApiEvent(String name, String url, Dates dates, Classifications[] classifications, Embedded _embedded) {
     public record Dates(Date start){
         public record Date(String localTime, String localData){}
     }
