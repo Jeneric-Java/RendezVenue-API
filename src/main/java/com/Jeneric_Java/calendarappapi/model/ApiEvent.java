@@ -8,4 +8,8 @@ public record ApiEvent() {
     public record Classifications(Segment segment){
         public record Segment(String name){}
     }
+
+    public record Embedded(Venue[] venues){
+        public record Venue(String name, String postalCode){}
+    }
 }
