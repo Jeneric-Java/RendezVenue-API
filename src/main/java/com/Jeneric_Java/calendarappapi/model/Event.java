@@ -14,4 +14,6 @@ public class Event{
     String location;
     String url;
     String type;
+    Time startTime;
+    Time endTime;
 }
