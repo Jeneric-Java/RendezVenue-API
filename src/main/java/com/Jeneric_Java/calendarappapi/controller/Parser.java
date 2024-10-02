@@ -1,11 +1,15 @@
 package com.Jeneric_Java.calendarappapi.controller;
 
+import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.ApiEvent;
+import com.Jeneric_Java.calendarappapi.model.ApiPage;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.model.Time;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class Parser {
@@ -45,5 +49,18 @@ public class Parser {
         } catch (NumberFormatException e) {
             throw new ParseException("Error while parsing event date/time!", -1);
         }
+    }
+
+    public List<Event> parsePage(ApiPage input) throws ParseException {
+        if (input == null) throw new IllegalArgumentException("Page cannot be null!");
+        if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
+
+        ArrayList<Event> events = new ArrayList<>();
+
+        for (ApiEvent event : input._embedded().events()) {
+            events.add(parseEvent(event));
+        }
+
+        return events;
     }
 }
