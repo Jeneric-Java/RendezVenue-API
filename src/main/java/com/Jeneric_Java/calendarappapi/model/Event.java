@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Event{
-    long id;
+    Long id;
     String title;
     String description;
     String location;

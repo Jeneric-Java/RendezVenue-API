@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Time {
-    long id;
+    Long id;
     int year;
     int month;
     int day;
