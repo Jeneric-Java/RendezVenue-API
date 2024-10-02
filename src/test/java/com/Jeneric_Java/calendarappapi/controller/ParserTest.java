@@ -6,11 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.text.ParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class ParserTest {
 
     @Autowired
@@ -22,7 +24,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct result when given properly formatted input")
-        void testCorrectFormat() {
+        void testCorrectFormat() throws ParseException {
             ApiEvent.Dates.Date input = new ApiEvent.Dates.Date("10:00:00", "2024-10-01");
             Time expected = new Time(null, 2024, 10, 1, 10, 0);
 
