@@ -6,14 +6,12 @@ import com.Jeneric_Java.calendarappapi.model.Time;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
-import java.util.stream.Stream;
 
 @Controller
 public class Parser {
 
     public Event parseEvent(ApiEvent input) throws ParseException {
-        if (input == null) throw new IllegalArgumentException("Event cannot be null!");
-        if (input.name() == null || input.url() == null || input.dates() == null || input.classifications() == null || input.classifications().length == 0 || input.classifications()[0] == null || input.classifications()[0].segment() == null || input.classifications()[0].segment().name() == null || input._embedded() == null || input._embedded().venues() == null || input._embedded().venues().length == 0 || input._embedded().venues()[0] == null || input._embedded().venues()[0].name() == null || input._embedded().venues()[0].postalCode() == null) throw new IllegalArgumentException();
+        if (input == null || input.hasNullFields()) throw new IllegalArgumentException("Event cannot be null!");
 
         String description = input.name() + " @ " + input._embedded().venues()[0].name();
 
@@ -30,7 +28,7 @@ public class Parser {
     }
 
     public Time parseTime(ApiEvent.Dates.Date input) throws ParseException {
-        if (input == null || input.localTime() == null || input.localDate() == null) throw new IllegalArgumentException("Error while parsing event date/time! Date/Time cannot be null!");
+        if (input == null || input.hasNullFields()) throw new IllegalArgumentException("Error while parsing event date/time! Date/Time cannot be null!");
 
         String[] date = input.localDate().split("-");
         String[] time = input.localTime().split(":");
