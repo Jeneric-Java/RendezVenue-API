@@ -15,5 +15,5 @@ public class Event{
     String url;
     String type;
     Time startTime;
-    Time endTime;
+
 }
