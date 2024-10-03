@@ -49,4 +49,7 @@ public class Event implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "event")
     Set<Time> times = new HashSet<>();
+
+    @Column(name = "closest_city", nullable = false)
+    String closestCity;
 }
