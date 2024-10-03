@@ -15,7 +15,7 @@ import java.util.List;
         private ApiService apiService;
 
         // GET all events
-        @GetMapping("/events")
+        @GetMapping()
         public List<Event> getAllEvents(@RequestParam String location){
             return apiService.getAllEvents(location);
         }
