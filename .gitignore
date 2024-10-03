@@ -1,3 +1,5 @@
+src/main/java/com/Jeneric_Java/calendarappapi/secrets
+src/main/java/com/Jeneric_Java/calendarappapi/secrets.Secrets.java
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
