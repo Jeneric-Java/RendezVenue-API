@@ -24,13 +24,13 @@ import java.util.List;
 
         // GET event by id
         @GetMapping("/{id}")
-        public Event getEventById(@PathVariable Long id){
-            return apiService.getEventByID(id);
+        public ResponseEntity<Event> getEventById(@PathVariable Long id){
+            return new ResponseEntity<>(apiService.getEventByID(id), HttpStatus.OK);
         }
 
         @DeleteMapping("/{id}")
-        public String deleteEventById(@PathVariable Long id){
-            apiService.deleteEventById(id);
+        public ResponseEntity<String> deleteEventById(@PathVariable Long id){
+            return new ResponseEntity<>(apiService.deleteEventById(id), HttpStatus.OK);
         }
 
     }
