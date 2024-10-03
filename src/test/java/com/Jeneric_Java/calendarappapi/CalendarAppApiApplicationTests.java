@@ -51,9 +51,6 @@ public class CalendarAppApiApplicationTests {
 
 				when(apiService.getAllEvents("location1")).thenReturn(mockEvents);
 
-				var test = mockMvc.perform(get("/api/events")
-				.contentType(MediaType.APPLICATION_JSON)
-				.param("location", "location1"));
 
 				mockMvc.perform(get("/api/events")
 					.contentType(MediaType.APPLICATION_JSON)
@@ -76,7 +73,6 @@ public class CalendarAppApiApplicationTests {
 						.andExpect(jsonPath("$[2].location").value("location3"))
 						.andExpect(jsonPath("$[2].url").value("url3"))
 						.andExpect(jsonPath("$[2].type").value("type3"));
-
 
 
 	}
