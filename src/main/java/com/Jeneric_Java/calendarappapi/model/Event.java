@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +17,7 @@ import java.util.Set;
 @Data
 @Entity
 @Table(name = "Events")
-public class Event{
+public class Event implements Serializable {
 
     @Id
     @GeneratedValue
