@@ -1,4 +1,24 @@
 package com.Jeneric_Java.calendarappapi.service;
 
-public class ApiServiceImpl {
+import com.Jeneric_Java.calendarappapi.model.Event;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ApiServiceImpl implements ApiService {
+    @Override
+    public List<Event> getAllEvents(String location) {
+        return List.of();
+    }
+
+    @Override
+    public Event getEventByID(String id) {
+        return null;
+    }
+
+    @Override
+    public Event deleteEventById(String id) {
+        return null;
+    }
 }

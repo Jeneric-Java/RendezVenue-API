@@ -13,7 +13,7 @@ public record ApiEvent(String name, String url, Dates dates, Classifications[] c
     }
 
     public record Classifications(Segment segment){
-        public record Segment(String name){}
+        public record Segment(String id){}
     }
 
     public record Embedded(Venue[] venues){
@@ -28,7 +28,7 @@ public record ApiEvent(String name, String url, Dates dates, Classifications[] c
                 || this.classifications().length == 0
                 || this.classifications()[0] == null
                 || this.classifications()[0].segment() == null
-                || this.classifications()[0].segment().name() == null
+                || this.classifications()[0].segment().id == null
                 || this._embedded() == null || this._embedded().venues() == null
                 || this._embedded().venues().length == 0
                 || this._embedded().venues()[0] == null
