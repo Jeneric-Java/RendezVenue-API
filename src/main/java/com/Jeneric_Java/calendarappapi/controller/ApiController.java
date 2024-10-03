@@ -22,12 +22,12 @@ import java.util.List;
 
         // GET event by id
         @GetMapping("/{id}")
-        public Event getEventById(@PathVariable String id){
+        public Event getEventById(@PathVariable Long id){
             return apiService.getEventByID(id);
         }
 
         @DeleteMapping("/{id}")
-        public void deleteEventById(@PathVariable String id){
+        public void deleteEventById(@PathVariable Long id){
             apiService.deleteEventById(id);
         }
 

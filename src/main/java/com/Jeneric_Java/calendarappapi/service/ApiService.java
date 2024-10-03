@@ -7,6 +7,6 @@ import java.util.List;
 public interface ApiService {
 
         List<Event> getAllEvents(String location);
-        Event getEventByID (String id);
-        Event deleteEventById(String id);
+        Event getEventByID (Long id);
+        Event deleteEventById(Long id);
 }
