@@ -45,10 +45,6 @@ class ApiControllerTest {
 
         when(apiService.getAllEvents("location1")).thenReturn(mockEvents);
 
-        var test = mockMvc.perform(get("/api/events")
-                .contentType(MediaType.APPLICATION_JSON)
-                .param("location", "location1"));
-
         mockMvc.perform(get("/api/events")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("location", "location1"))
@@ -66,6 +62,6 @@ class ApiControllerTest {
                 .andExpect(jsonPath("$[2].title").value("title3"))
                 .andExpect(jsonPath("$[2].description").value("description3"))
                 .andExpect(jsonPath("$[2].location").value("location3"))
-                .andExpect(jsonPath("$[2].url").value("url3"))
+                .andExpect(jsonPath("$[2].url").value("url3"));
     }
 }
