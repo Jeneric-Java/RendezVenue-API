@@ -8,5 +8,5 @@ public interface ApiService {
 
         List<Event> getAllEvents(String location);
         Event getEventByID (Long id);
-        Event deleteEventById(Long id);
+        String deleteEventById(Long id);
 }

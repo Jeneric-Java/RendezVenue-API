@@ -36,7 +36,13 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public Event deleteEventById(Long id) {
-        return null;
+    public String deleteEventById(Long id) {
+        Optional<Event> event = apiRepository.findById(id);
+        if(event.isPresent()) {
+            apiRepository.deleteById(id);
+            return String.format("Event with id '%s' has been deleted successfully.", id);
+        } else {
+            throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
+        }
     }
 }
