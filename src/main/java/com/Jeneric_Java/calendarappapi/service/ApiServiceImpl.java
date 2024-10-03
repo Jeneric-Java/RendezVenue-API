@@ -45,4 +45,9 @@ public class ApiServiceImpl implements ApiService {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
         }
     }
+
+    @Override
+    public Event insertEvent(Event event) {
+        return apiRepository.save(event);
+    }
 }

@@ -3,6 +3,7 @@ package com.Jeneric_Java.calendarappapi.controller;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,13 @@ import java.util.List;
         @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteEventById(@PathVariable Long id){
             return new ResponseEntity<>(apiService.deleteEventById(id), HttpStatus.OK);
+        }
+        @PostMapping
+        public ResponseEntity<Event> addEvent(@RequestBody Event event) {
+            Event newEvent  = apiService.insertEvent(event);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("event", "/api/events/" + newEvent.getId().toString());
+            return new ResponseEntity<>(newEvent, httpHeaders, HttpStatus.CREATED);
         }
 
     }
