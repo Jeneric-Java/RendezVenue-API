@@ -43,9 +43,46 @@ class ApiRepositoryTest {
         assertThat(actualEventList).hasSize(3);
         assertThat(expectedEventList).isEqualTo(actualEventList);
     }
+
+
+
+    @Test
+    @DisplayName("Writes to, and reads from, H2 in-memory database three instances of class event constrained by Time")
+    public void testGetAllEventsWithTime() {
+
+        // Arrange
+        List<Event> expectedEventList = getEventList();
+
+        // Act
+        apiRepository.saveAll(expectedEventList);
+        Iterable<Event> actualEventList = apiRepository.findAll();
+
+        // Assert
+        assertThat(actualEventList).hasSize(3);
+        assertThat(expectedEventList).isEqualTo(actualEventList);
+    }
+
+    private static List<Event> getEventListWithTime() {
+        Event event1 = new Event(1L, "title1",
+                "description1", "location1", "url1",
+                EventType.MISC, "city1", new Time(1L, 2024));
+        Event event2 = new Event(2L, "title2",
+                "description2", "location2",
+                "url2", EventType.MISC, "city2", null);
+        Event event3 = new Event(3L, "title3",
+                "description3", "location3",
+                "url3", EventType.MISC, "city3", null);
+
+        List<Event> expectedEventList = new ArrayList<>();
+        expectedEventList.add(event1);
+        expectedEventList.add(event2);
+        expectedEventList.add(event3);
+        return expectedEventList;
+    }
+
     private static List<Event> getEventList() {
         Event event1 = new Event(1L, "title1", "description1", "location1", "url1", EventType.MISC, "city1", null);
-        Event event2 = new Event(2L, "title2", "description2", "location2", "url2", EventType.MISC, "city2", null );
+        Event event2 = new Event(2L, "title2", "description2", "location2", "url2", EventType.MISC, "city2", null);
         Event event3 = new Event(3L, "title3", "description3", "location3", "url3", EventType.MISC, "city3", null);
 
         List<Event> expectedEventList = new ArrayList<>();
@@ -54,7 +91,6 @@ class ApiRepositoryTest {
         expectedEventList.add(event3);
         return expectedEventList;
 
-       // (List.of(new Time(1L, 2024, 9, 3, 12, 5, null));
+        // (List.of(new Time(1L, 2024, 9, 3, 12, 5, null));
     }
-
 }
