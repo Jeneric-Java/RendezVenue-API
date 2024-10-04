@@ -10,4 +10,5 @@ public interface ApiService {
         Event getEventByID (Long id);
         String deleteEventById(Long id);
         Event insertEvent(Event event);
+        Event updateEventById(Long id, Event event);
 }

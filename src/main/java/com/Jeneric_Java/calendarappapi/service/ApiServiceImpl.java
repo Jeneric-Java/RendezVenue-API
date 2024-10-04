@@ -45,9 +45,27 @@ public class ApiServiceImpl implements ApiService {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
         }
     }
-
     @Override
     public Event insertEvent(Event event) {
         return apiRepository.save(event);
+    }
+
+    @Override
+    public Event updateEventById(Long id, Event event) {
+        Optional<Event> eventFromRepo = apiRepository.findById(id);
+        Event newEvent;
+        if (eventFromRepo.isPresent()) {
+            newEvent = eventFromRepo.get();
+            newEvent.setTitle(event.getTitle());
+            newEvent.setDescription(event.getDescription());
+            newEvent.setLocation(event.getLocation());
+            newEvent.setClosestCity(event.getClosestCity());
+            newEvent.setUrl(event.getUrl());
+            newEvent.setType(event.getType());
+            newEvent.setTimes(event.getTimes());
+            return apiRepository.save(newEvent);
+        } else {
+            throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
+        }
     }
 }
