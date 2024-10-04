@@ -3,6 +3,9 @@ package com.Jeneric_Java.calendarappapi.controller;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,19 +19,30 @@ import java.util.List;
 
         // GET all events
         @GetMapping()
-        public List<Event> getAllEvents(@RequestParam String location){
-            return apiService.getAllEvents(location);
+       public ResponseEntity<List<Event>> getAllEvents(@RequestParam String location){
+            return new ResponseEntity<>(apiService.getAllEvents(location), HttpStatus.OK);
         }
 
         // GET event by id
         @GetMapping("/{id}")
-        public Event getEventById(@PathVariable String id){
-            return apiService.getEventByID(id);
+        public ResponseEntity<Event> getEventById(@PathVariable Long id){
+            return new ResponseEntity<>(apiService.getEventByID(id), HttpStatus.OK);
         }
 
         @DeleteMapping("/{id}")
-        public void deleteEventById(@PathVariable String id){
-            apiService.deleteEventById(id);
+        public ResponseEntity<String> deleteEventById(@PathVariable Long id){
+            return new ResponseEntity<>(apiService.deleteEventById(id), HttpStatus.OK);
+        }
+        @PostMapping
+        public ResponseEntity<Event> addEvent(@RequestBody Event event) {
+            Event newEvent  = apiService.insertEvent(event);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add("event", "/api/events/" + newEvent.getId().toString());
+            return new ResponseEntity<>(newEvent, httpHeaders, HttpStatus.CREATED);
+        }
+        @PatchMapping("/{id}")
+        public ResponseEntity<Event> updateEventById(@PathVariable("id") Long id, @RequestBody Event event) {
+            return new ResponseEntity<>(apiService.updateEventById(id, event), HttpStatus.NO_CONTENT);
         }
 
     }

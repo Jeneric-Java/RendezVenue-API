@@ -1,10 +1,8 @@
 package com.Jeneric_Java.calendarappapi.controller;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
-import com.Jeneric_Java.calendarappapi.model.ApiEvent;
-import com.Jeneric_Java.calendarappapi.model.ApiPage;
-import com.Jeneric_Java.calendarappapi.model.Event;
-import com.Jeneric_Java.calendarappapi.model.Time;
+import com.Jeneric_Java.calendarappapi.model.*;
+import com.google.common.collect.ImmutableMap;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
@@ -25,10 +23,23 @@ public class Parser {
                 description,
                 input._embedded().venues()[0].postalCode(),
                 input.url(),
-                input.classifications()[0].segment().name(),
-                parseTime(input.dates().start()),
+                parseSegment(input.classifications()[0].segment()),
+        //        parseTime(input.dates().start()),
+                null,
                 null
         );
+    }
+
+    private EventType parseSegment(ApiEvent.Classifications.Segment segment) {
+        final ImmutableMap<String, EventType> eventTypes = ImmutableMap.of(
+                "KZFzniwnSyZfZ7v7na", EventType.ART_THEATRE,
+                "KZFzniwnSyZfZ7v7n1", EventType.MISC,
+                "KZFzniwnSyZfZ7v7nE", EventType.SPORT,
+                "KZFzniwnSyZfZ7v7nJ", EventType.MUSIC,
+                "KZFzniwnSyZfZ7v7nn", EventType.FILM
+        );
+        if (segment.id() == null) return EventType.MISC;
+        return eventTypes.getOrDefault(segment.id(), EventType.MISC);
     }
 
     public Time parseTime(ApiEvent.Dates.Date input) throws ParseException {
@@ -44,7 +55,8 @@ public class Parser {
                     Integer.parseInt(date[1]),
                     Integer.parseInt(date[2]),
                     Integer.parseInt(time[0]),
-                    Integer.parseInt(time[1])
+                    Integer.parseInt(time[1]),
+                    null
             );
         } catch (NumberFormatException e) {
             throw new ParseException("Error while parsing event date/time!", -1);
