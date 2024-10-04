@@ -24,7 +24,7 @@ public class Parser {
                 input._embedded().venues()[0].postalCode(),
                 input.url(),
                 parseSegment(input.classifications()[0].segment()),
-                parseTime(input.dates().start()),
+        //        parseTime(input.dates().start()),
                 null,
                 null
         );
