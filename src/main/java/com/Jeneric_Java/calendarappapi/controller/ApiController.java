@@ -40,6 +40,10 @@ import java.util.List;
             httpHeaders.add("event", "/api/events/" + newEvent.getId().toString());
             return new ResponseEntity<>(newEvent, httpHeaders, HttpStatus.CREATED);
         }
+        @PatchMapping("/{id}")
+        public ResponseEntity<Event> updateEventById(@PathVariable("id") Long id, @RequestBody Event event) {
+            return new ResponseEntity<>(apiService.updateEventById(id, event), HttpStatus.NO_CONTENT);
+        }
 
     }
 
