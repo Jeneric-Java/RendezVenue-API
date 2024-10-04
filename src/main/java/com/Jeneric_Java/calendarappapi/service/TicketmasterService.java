@@ -5,6 +5,9 @@ import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.ApiPage;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.secrets.Secrets;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestClientCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -17,6 +20,9 @@ import org.springframework.web.client.RestClient;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TicketmasterService {
@@ -26,9 +32,27 @@ public class TicketmasterService {
     @Autowired
     private RestClient client;
 
+    private final LoadingCache<String, List<Event>> eventCache;
+
     public TicketmasterService(Parser parser, RestClient client) {
         this.parser = parser;
         this.client = client;
+
+        CacheLoader<String, List<Event>> loader = new CacheLoader<String, List<Event>>() {
+            @Override
+            public List<Event> load(String key) throws Exception {
+                return getEventByGeoHash(key);
+            }
+        };
+        this.eventCache = CacheBuilder
+                .newBuilder()
+                .expireAfterAccess(5, TimeUnit.MINUTES)
+                .build(loader);
+
+        Timer cacheCleaner = new Timer(true);
+        cacheCleaner.scheduleAtFixedRate(new CacheCleaner(), 300000, 60000);
+        Timer cacheInvalidater = new Timer(true);
+        cacheInvalidater.scheduleAtFixedRate(new CacheInvalidater(), 3000000, 3000000);
     }
 
     public List<Event> getEventByGeoHash(String geoHash) throws ParseException {
@@ -85,6 +109,21 @@ public class TicketmasterService {
         }
 
         public TicketmasterServiceConfig() {
+        }
+    }
+
+    public class CacheCleaner extends TimerTask {
+
+        @Override
+        public void run() {
+            eventCache.cleanUp();
+        }
+    }
+    public class CacheInvalidater extends TimerTask {
+
+        @Override
+        public void run() {
+            eventCache.invalidateAll();
         }
     }
 }
