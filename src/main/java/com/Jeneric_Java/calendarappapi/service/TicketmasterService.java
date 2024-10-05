@@ -2,7 +2,7 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.controller.Parser;
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
-import com.Jeneric_Java.calendarappapi.model.ApiPage;
+import com.Jeneric_Java.calendarappapi.model.TicketmasterPage;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.secrets.Secrets;
 import com.google.common.cache.CacheBuilder;
@@ -38,7 +38,7 @@ public class TicketmasterService {
         this.parser = parser;
         this.client = client;
 
-        CacheLoader<String, List<Event>> loader = new CacheLoader<String, List<Event>>() {
+        CacheLoader<String, List<Event>> loader = new CacheLoader<>() {
             @Override
             public List<Event> load(String key) throws Exception {
                 return getEventByGeoHash(key);
@@ -66,10 +66,10 @@ public class TicketmasterService {
         uriBuilder.append("&geoPoint=").append(geoHash);
         uriBuilder.append("&apikey=").append(secrets.getTicketmasterKey());
 
-        ApiPage result = client.get()
+        TicketmasterPage result = client.get()
                 .uri(uriBuilder.toString())
                 .retrieve()
-                .body(ApiPage.class);
+                .body(TicketmasterPage.class);
 
         if (result == null || result._embedded() == null || result._embedded().events() == null) throw new NoResultsFoundException("No results for query!");
 
@@ -82,7 +82,7 @@ public class TicketmasterService {
                 result = client.get()
                         .uri(uriBuilder.toString() + "&page=" + i)
                         .retrieve()
-                        .body(ApiPage.class);
+                        .body(TicketmasterPage.class);
 
                 events.addAll(parser.parsePage(result));
             }
