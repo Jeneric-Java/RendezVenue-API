@@ -2,7 +2,8 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.Event;
-import com.Jeneric_Java.calendarappapi.repository.ApiRepository;
+import com.Jeneric_Java.calendarappapi.repository.EventRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,12 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class ApiServiceImpl implements ApiService {
 
     @Autowired
-    ApiRepository apiRepository;
-
-
+    EventRepository apiRepository;
 
     @Override
     public List<Event> getAllEvents(String location) {
@@ -62,7 +62,6 @@ public class ApiServiceImpl implements ApiService {
             newEvent.setClosestCity(event.getClosestCity());
             newEvent.setUrl(event.getUrl());
             newEvent.setType(event.getType());
-            newEvent.setTimes(event.getTimes());
             return apiRepository.save(newEvent);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
