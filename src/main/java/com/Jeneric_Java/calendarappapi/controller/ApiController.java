@@ -1,6 +1,7 @@
 package com.Jeneric_Java.calendarappapi.controller;
 
 import com.Jeneric_Java.calendarappapi.model.Event;
+import com.Jeneric_Java.calendarappapi.model.Locations;
 import com.Jeneric_Java.calendarappapi.service.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -19,8 +20,8 @@ import java.util.List;
 
         // GET all events
         @GetMapping()
-       public ResponseEntity<List<Event>> getAllEvents(@RequestParam String location){
-            return new ResponseEntity<>(apiService.getAllEvents(location), HttpStatus.OK);
+        public ResponseEntity<List<Event>> getAllEvents(@RequestParam Locations location){
+            return new ResponseEntity<>(apiService.getEventsByLocation(location), HttpStatus.OK);
         }
 
         // GET event by id
