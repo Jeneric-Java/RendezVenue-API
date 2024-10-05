@@ -38,7 +38,7 @@ public class Event implements Serializable {
     EventType type;
 
     @Column(name = "closest_city", nullable = false)
-    String closestCity;
+    Locations closestCity;
 
     @Column(name = "start_time", nullable = true)
     String startTime;
