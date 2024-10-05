@@ -2,6 +2,7 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.Event;
+import com.Jeneric_Java.calendarappapi.model.Locations;
 import com.Jeneric_Java.calendarappapi.repository.EventRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Transactional
@@ -18,10 +20,18 @@ public class ApiServiceImpl implements ApiService {
     @Autowired
     EventRepository eventRepository;
 
+    @Autowired
+    TicketmasterService ticketmasterService;
+
     @Override
-    public List<Event> getAllEvents(String location) {
+    public List<Event> getEventsByLocation(Locations location) {
         List<Event> events = new ArrayList<>();
         eventRepository.findAll().forEach(events::add);
+        try {
+            events.addAll(ticketmasterService.getEventFromCache(location));
+        } catch (ExecutionException e) {
+            throw new RuntimeException(e);
+        }
         return events;
     }
 
