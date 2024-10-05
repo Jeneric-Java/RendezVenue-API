@@ -16,18 +16,18 @@ import java.util.Optional;
 public class ApiServiceImpl implements ApiService {
 
     @Autowired
-    EventRepository apiRepository;
+    EventRepository eventRepository;
 
     @Override
     public List<Event> getAllEvents(String location) {
         List<Event> events = new ArrayList<>();
-        apiRepository.findAll().forEach(events::add);
+        eventRepository.findAll().forEach(events::add);
         return events;
     }
 
     @Override
     public Event getEventByID(Long id) {
-        Optional<Event> event = apiRepository.findById(id);
+        Optional<Event> event = eventRepository.findById(id);
         if(event.isPresent()) {
             return event.get();
         } else {
@@ -37,9 +37,9 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public String deleteEventById(Long id) {
-        Optional<Event> event = apiRepository.findById(id);
+        Optional<Event> event = eventRepository.findById(id);
         if(event.isPresent()) {
-            apiRepository.deleteById(id);
+            eventRepository.deleteById(id);
             return String.format("Event with id '%s' has been deleted successfully.", id);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
@@ -47,12 +47,12 @@ public class ApiServiceImpl implements ApiService {
     }
     @Override
     public Event insertEvent(Event event) {
-        return apiRepository.save(event);
+        return eventRepository.save(event);
     }
 
     @Override
     public Event updateEventById(Long id, Event event) {
-        Optional<Event> eventFromRepo = apiRepository.findById(id);
+        Optional<Event> eventFromRepo = eventRepository.findById(id);
         Event newEvent;
         if (eventFromRepo.isPresent()) {
             newEvent = eventFromRepo.get();
@@ -62,7 +62,7 @@ public class ApiServiceImpl implements ApiService {
             newEvent.setClosestCity(event.getClosestCity());
             newEvent.setUrl(event.getUrl());
             newEvent.setType(event.getType());
-            return apiRepository.save(newEvent);
+            return eventRepository.save(newEvent);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
         }
