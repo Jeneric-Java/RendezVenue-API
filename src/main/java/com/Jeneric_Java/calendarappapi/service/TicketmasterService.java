@@ -2,6 +2,7 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.controller.Parser;
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
+import com.Jeneric_Java.calendarappapi.model.Locations;
 import com.Jeneric_Java.calendarappapi.model.TicketmasterPage;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.secrets.Secrets;
@@ -32,15 +33,15 @@ public class TicketmasterService {
     @Autowired
     private RestClient client;
 
-    private final LoadingCache<String, List<Event>> eventCache;
+    private final LoadingCache<Locations, List<Event>> eventCache;
 
     public TicketmasterService(Parser parser, RestClient client) {
         this.parser = parser;
         this.client = client;
 
-        CacheLoader<String, List<Event>> loader = new CacheLoader<>() {
+        CacheLoader<Locations, List<Event>> loader = new CacheLoader<>() {
             @Override
-            public List<Event> load(String key) throws Exception {
+            public List<Event> load(Locations key) throws Exception {
                 return getEventByGeoHash(key);
             }
         };
@@ -55,15 +56,12 @@ public class TicketmasterService {
         cacheInvalidater.scheduleAtFixedRate(new CacheInvalidater(), 3000000, 3000000);
     }
 
-    public List<Event> getEventByGeoHash(String geoHash) throws ParseException {
-        if (geoHash.length() <= 3 || !geoHash.matches("^[a-zA-Z\\d]+$")) throw new IllegalArgumentException();
+    public List<Event> getEventByGeoHash(Locations location) throws ParseException {
+        String geoHash = location.getGeoHash();
 
-        if  (geoHash.length() > 9) {
-            geoHash = geoHash.substring(0, 9);
-        }
-
-        StringBuilder uriBuilder = new StringBuilder(".json?radius=5&locale=en-gb&size=200");
+        StringBuilder uriBuilder = new StringBuilder(".json?locale=en-gb&size=200");
         uriBuilder.append("&geoPoint=").append(geoHash);
+        uriBuilder.append("&radius=").append(location.getRadius());
         uriBuilder.append("&apikey=").append(secrets.getTicketmasterKey());
 
         TicketmasterPage result = client.get()
