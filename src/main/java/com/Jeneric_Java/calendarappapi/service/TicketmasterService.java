@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -54,6 +55,10 @@ public class TicketmasterService {
         cacheCleaner.scheduleAtFixedRate(new CacheCleaner(), 300000, 60000);
         Timer cacheInvalidater = new Timer(true);
         cacheInvalidater.scheduleAtFixedRate(new CacheInvalidater(), 3000000, 3000000);
+    }
+
+    public List<Event> getEventFromCache(Locations location) throws ExecutionException {
+        return eventCache.get(location);
     }
 
     public List<Event> getEventByGeoHash(Locations location) throws ParseException {
