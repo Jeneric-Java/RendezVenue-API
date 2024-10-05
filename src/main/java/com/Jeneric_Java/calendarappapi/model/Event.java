@@ -1,13 +1,12 @@
 package com.Jeneric_Java.calendarappapi.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Setter
 @Getter
@@ -41,11 +40,15 @@ public class Event implements Serializable {
     @Column(name = "closest_city", nullable = false)
     String closestCity;
 
-    @Column(name = "start_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime startTime;
+    @Column(name = "start_time", nullable = true)
+    String startTime;
 
-    @Column(name = "end_time")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
-    LocalDateTime endTime;
+    @Column(name = "start_date", nullable = false)
+    String startDate;
+
+    @Column(name = "end_time", nullable = true)
+    String endTime;
+
+    @Column(name = "end_date", nullable = true)
+    String endDate;
 }
