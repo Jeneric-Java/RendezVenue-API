@@ -1,6 +1,0 @@
-This is a test.
-
-testfeature1
-
-
-testfeature2
