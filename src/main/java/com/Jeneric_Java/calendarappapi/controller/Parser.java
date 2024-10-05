@@ -11,7 +11,7 @@ import java.util.List;
 @Controller
 public class Parser {
 
-    public Event parseEvent(ApiEvent input) throws ParseException {
+    public Event parseEvent(TicketmasterEvent input) throws ParseException {
         if (input == null
                 || input.name() == null
                 || input.url() == null
@@ -50,6 +50,12 @@ public class Parser {
             description = input.name() + " @ " + input._embedded().venues()[0].name();
         }
 
+        String startTime = (input.dates().start().localTime() != null)
+                ? input.dates().start().localTime()
+                : null;
+
+        String startDate = input.dates().start().localDate();
+
         return new Event(
                 null,
                 name,
@@ -57,13 +63,15 @@ public class Parser {
                 postalCode,
                 url,
                 type,
-                //parseTime(input.dates().start()),
+                null,
+                startTime,
+                startDate,
                 null,
                 null
         );
     }
 
-    private EventType parseSegment(ApiEvent.Classifications.Segment segment) {
+    private EventType parseSegment(TicketmasterEvent.Classifications.Segment segment) {
         if (segment.id() == null) return EventType.MISC;
 
         return switch (segment.id()) {
@@ -75,46 +83,13 @@ public class Parser {
         };
     }
 
-    public Time parseTime(ApiEvent.Dates.Date input) throws ParseException {
-        if (input == null) throw new IllegalArgumentException("Error while parsing event date/time! Date/Time cannot be null!");
-
-        Integer year, month, day, hour, minute;
-
-        if (input.localDate() == null || input.localDate().isBlank()) {
-            throw new IllegalArgumentException("Date cannot be null!");
-        } else {
-            String[] date = input.localDate().split("-");
-            try {
-                year = Integer.parseInt(date[0]);
-                month = Integer.parseInt(date[1]);
-                day = Integer.parseInt(date[2]);
-            } catch (NumberFormatException e) {
-                throw new ParseException("Error while parsing event date!", -1);
-            }
-        }
-
-        if (input.localTime() == null || input.localTime().isBlank()) {
-            hour = minute = null;
-        } else {
-            String[] time = input.localTime().split(":");
-            try {
-                hour = Integer.parseInt(time[0]);
-                minute = Integer.parseInt(time[1]);
-            } catch (NumberFormatException e) {
-                throw new ParseException("Error while parsing event time!", -1);
-            }
-        }
-
-        return new Time(null, year, month, day, hour, minute, null);
-    }
-
-    public List<Event> parsePage(ApiPage input) throws ParseException {
+    public List<Event> parsePage(TicketmasterPage input) throws ParseException {
         if (input == null) throw new IllegalArgumentException("Page cannot be null!");
         if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
 
         ArrayList<Event> events = new ArrayList<>();
 
-        for (ApiEvent event : input._embedded().events()) {
+        for (TicketmasterEvent event : input._embedded().events()) {
             events.add(parseEvent(event));
         }
 
