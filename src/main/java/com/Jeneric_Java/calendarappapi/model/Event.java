@@ -65,4 +65,8 @@ public class Event implements Serializable {
     @Column(name = "end_date", nullable = true)
     @Schema(name = "endDate", description = "Date the event ends, if provided. Formatted YYYY-MM-DD", example = "2024-10-02", nullable = true)
     String endDate;
+
+    @Column(name = "image_url", nullable = true)
+    @Schema(name = "imageUrl", description = "Url to location of event image, if provided.", example = "example.com/image.png", nullable = true)
+    String imageUrl;
 }
