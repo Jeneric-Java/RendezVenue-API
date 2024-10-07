@@ -2,6 +2,7 @@ package com.Jeneric_Java.calendarappapi.controller;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.*;
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
@@ -11,7 +12,7 @@ import java.util.List;
 @Controller
 public class Parser {
 
-    public Event parseEvent(TicketmasterEvent input) throws ParseException {
+    public Event parseEvent(TicketmasterEvent input, LocationSet location) throws ParseException {
         if (input == null
                 || input.name() == null
                 || input.url() == null
@@ -63,7 +64,7 @@ public class Parser {
                 postalCode,
                 url,
                 type,
-                null,
+                location,
                 startTime,
                 startDate,
                 null,
@@ -83,14 +84,14 @@ public class Parser {
         };
     }
 
-    public List<Event> parsePage(TicketmasterPage input) throws ParseException {
+    public List<Event> parsePage(TicketmasterPage input, LocationSet location) throws ParseException {
         if (input == null) throw new IllegalArgumentException("Page cannot be null!");
         if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
 
         ArrayList<Event> events = new ArrayList<>();
 
         for (TicketmasterEvent event : input._embedded().events()) {
-            events.add(parseEvent(event));
+            events.add(parseEvent(event, location));
         }
 
         return events;

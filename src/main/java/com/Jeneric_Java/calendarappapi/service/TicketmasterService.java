@@ -77,9 +77,9 @@ public class TicketmasterService {
         if (result == null || result._embedded() == null || result._embedded().events() == null) throw new NoResultsFoundException("No results for query!");
 
         if (result.page().totalPages() < 2) {
-            return parser.parsePage(result);
+            return parser.parsePage(result, location);
         } else {
-            List<Event> events = new ArrayList<>(parser.parsePage(result));
+            List<Event> events = new ArrayList<>(parser.parsePage(result, location));
             int pages = Math.min(result.page().totalPages(), 5);
             for (int i = 1; i < pages; i++) {
                 result = client.get()
@@ -87,7 +87,7 @@ public class TicketmasterService {
                         .retrieve()
                         .body(TicketmasterPage.class);
 
-                events.addAll(parser.parsePage(result));
+                events.addAll(parser.parsePage(result, location));
             }
             return events;
         }
