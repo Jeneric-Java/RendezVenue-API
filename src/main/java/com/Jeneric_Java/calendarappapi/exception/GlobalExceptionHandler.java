@@ -12,5 +12,4 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleItemNotFoundException(NoResultsFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-
 }

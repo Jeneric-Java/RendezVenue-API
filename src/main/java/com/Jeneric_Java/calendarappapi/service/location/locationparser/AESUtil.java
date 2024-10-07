@@ -7,7 +7,6 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -46,10 +45,6 @@ public class AESUtil {
 
         byte[] plainText = cipher.doFinal(Base64.getMimeDecoder().decode(cipherText));
         return new String(plainText);
-
-//        byte[] plainText = cipher.doFinal(Base64.getMimeDecoder()
-//                .decode(cipherText));
-//        return new String(plainText);
     }
 
     protected static SecretKey generateKey(int n) throws NoSuchAlgorithmException {
@@ -112,7 +107,4 @@ public class AESUtil {
 
         return credentials;
     }
-
-
-
 }

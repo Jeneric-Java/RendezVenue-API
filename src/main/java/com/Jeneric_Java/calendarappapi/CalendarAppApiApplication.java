@@ -35,5 +35,4 @@ public class CalendarAppApiApplication {
 //
 //		SpringApplication.run(CalendarAppApiApplication.class, args);
 //	}
-
 }
