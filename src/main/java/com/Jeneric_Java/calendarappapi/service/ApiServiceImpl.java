@@ -2,12 +2,22 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.Event;
-import com.Jeneric_Java.calendarappapi.model.Locations;
 import com.Jeneric_Java.calendarappapi.repository.EventRepository;
+import com.Jeneric_Java.calendarappapi.service.location.locationparser.LocationParser;
+import com.Jeneric_Java.calendarappapi.service.location.utilities.Location;
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,15 +34,27 @@ public class ApiServiceImpl implements ApiService {
     TicketmasterService ticketmasterService;
 
     @Override
-    public List<Event> getEventsByLocation(Locations location) {
+    public List<Event> getEventsByLocation(String geoHashEnc) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeySpecException, IOException, InvalidKeyException {
         List<Event> events = new ArrayList<>();
+
+        List<Location> locations = LocationParser.getCoverageByUserLocation(geoHashEnc);
+
+        List<LocationSet> nodes = new ArrayList<>();
+
+        locations.forEach(location -> nodes.add(location.getLocationSet()));
+
         eventRepository.findAll().forEach(events::add);
+
+        List<Event> filteredEvents = new ArrayList<>(events.stream().filter(event -> nodes.contains(event.getClosestCity())).toList());
+
         try {
-            events.addAll(ticketmasterService.getEventFromCache(location));
+            for (LocationSet node : nodes) {
+                filteredEvents.addAll(ticketmasterService.getEventFromCache(node));
+            }
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
-        return events;
+        return filteredEvents;
     }
 
     @Override

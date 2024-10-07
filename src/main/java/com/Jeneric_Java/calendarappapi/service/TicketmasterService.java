@@ -2,10 +2,10 @@ package com.Jeneric_Java.calendarappapi.service;
 
 import com.Jeneric_Java.calendarappapi.controller.Parser;
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
-import com.Jeneric_Java.calendarappapi.model.Locations;
 import com.Jeneric_Java.calendarappapi.model.TicketmasterPage;
 import com.Jeneric_Java.calendarappapi.model.Event;
 import com.Jeneric_Java.calendarappapi.secrets.Secrets;
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -34,15 +34,15 @@ public class TicketmasterService {
     @Autowired
     private RestClient client;
 
-    private final LoadingCache<Locations, List<Event>> eventCache;
+    private final LoadingCache<LocationSet, List<Event>> eventCache;
 
     public TicketmasterService(Parser parser, RestClient client) {
         this.parser = parser;
         this.client = client;
 
-        CacheLoader<Locations, List<Event>> loader = new CacheLoader<>() {
+        CacheLoader<LocationSet, List<Event>> loader = new CacheLoader<>() {
             @Override
-            public List<Event> load(Locations key) throws Exception {
+            public List<Event> load(LocationSet key) throws Exception {
                 return getEventByGeoHash(key);
             }
         };
@@ -57,11 +57,11 @@ public class TicketmasterService {
         cacheInvalidater.scheduleAtFixedRate(new CacheInvalidater(), 3000000, 3000000);
     }
 
-    public List<Event> getEventFromCache(Locations location) throws ExecutionException {
+    public List<Event> getEventFromCache(LocationSet location) throws ExecutionException {
         return eventCache.get(location);
     }
 
-    public List<Event> getEventByGeoHash(Locations location) throws ParseException {
+    public List<Event> getEventByGeoHash(LocationSet location) throws ParseException {
         String geoHash = location.getGeoHash();
 
         StringBuilder uriBuilder = new StringBuilder(".json?locale=en-gb&size=200");

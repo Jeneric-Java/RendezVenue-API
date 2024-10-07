@@ -1,5 +1,6 @@
 package com.Jeneric_Java.calendarappapi.model;
 
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -38,7 +39,7 @@ public class Event implements Serializable {
     EventType type;
 
     @Column(name = "closest_city", nullable = false)
-    Locations closestCity;
+    LocationSet closestCity;
 
     @Column(name = "start_time", nullable = true)
     String startTime;
