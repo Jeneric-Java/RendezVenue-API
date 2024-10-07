@@ -23,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-@Tag(name = "RendezVenue API", description = "Find events across the uk")
+@Tag(name = "RendezVenue API", description = "Find events across the UK and Ireland")
 public class ApiController {
 
     @Autowired
