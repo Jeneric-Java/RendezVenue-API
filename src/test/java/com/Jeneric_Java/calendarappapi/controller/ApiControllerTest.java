@@ -188,7 +188,7 @@ class ApiControllerTest {
 
         List<Event> eventList = getEventList();
 
-        Event updatedEvent = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "21:45:00", "2018-09-15", "06:00:00", "2018-09-16");
+        Event updatedEvent = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "21:45:00", "2018-09-15", "06:00:00", "2018-09-16", null);
 
         mockApiServiceImpl.insertEvent(eventList.get(0));
         mockApiServiceImpl.insertEvent(eventList.get(1));
@@ -219,9 +219,9 @@ class ApiControllerTest {
     }
 
     private static List<Event> getEventList() {
-        Event event1 = new Event(1L, "title1", "description1", "M11 5DL", "url1", EventType.MISC, LocationSet.MANCHESTER, "15:30:00", "2024-08-01", "16:30:00", "2024-08-01");
-        Event event2 = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "19:45:00", "2018-09-15", "06:00:00", "2018-09-16");
-        Event event3 = new Event(3L, "title3", "description3", "L1 9PJ", "url3", EventType.FILM, LocationSet.LEEDS, "11:15:00", "2020-02-14", "11:45:00", "2020-02-14");
+        Event event1 = new Event(1L, "title1", "description1", "M11 5DL", "url1", EventType.MISC, LocationSet.MANCHESTER, "15:30:00", "2024-08-01", "16:30:00", "2024-08-01", null);
+        Event event2 = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "19:45:00", "2018-09-15", "06:00:00", "2018-09-16", null);
+        Event event3 = new Event(3L, "title3", "description3", "L1 9PJ", "url3", EventType.FILM, LocationSet.LEEDS, "11:15:00", "2020-02-14", "11:45:00", "2020-02-14", null);
 
         List<Event> expectedEventList = new ArrayList<>();
         expectedEventList.add(event1);

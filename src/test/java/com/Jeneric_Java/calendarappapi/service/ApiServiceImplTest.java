@@ -64,7 +64,7 @@ class ApiServiceImplTest {
         mockEventRepository.save(eventList.get(1));
         mockEventRepository.save(eventList.get(2));
 
-        Event updatedEvent = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "21:45:00", "2018-09-15", "06:00:00", "2018-09-16");
+        Event updatedEvent = new Event(2L, "title2", "description2", "B3 7GX", "url2", EventType.ART_THEATRE, LocationSet.BIRMINGHAM, "21:45:00", "2018-09-15", "06:00:00", "2018-09-16", null);
 
         when(mockEventRepository.findById(2L)).thenReturn(Optional.of(eventList.get(1)));
         when(mockEventRepository.save(updatedEvent)).thenReturn(updatedEvent);
@@ -85,9 +85,9 @@ class ApiServiceImplTest {
     }
 
     private static List<Event> getEventList() {
-        Event event1 = new Event(1L, "title1", "description1", "location1", "url1", EventType.MISC, LocationSet.BELFAST, "15:30", "2024-08-01", "16:30", "2024-08-01");
-        Event event2 = new Event(2L, "title2", "description2", "location2", "url2", EventType.MISC, LocationSet.DUBLIN, "19:45", "2018-09-15", "06:00", "2018-09-15");
-        Event event3 = new Event(3L, "title3", "description3", "location3", "url3", EventType.MISC, LocationSet.BRISTOL, "11:15", "2020-02-14", "11:45", "2020-02-14");
+        Event event1 = new Event(1L, "title1", "description1", "location1", "url1", EventType.MISC, LocationSet.BELFAST, "15:30", "2024-08-01", "16:30", "2024-08-01", null);
+        Event event2 = new Event(2L, "title2", "description2", "location2", "url2", EventType.MISC, LocationSet.DUBLIN, "19:45", "2018-09-15", "06:00", "2018-09-15", null);
+        Event event3 = new Event(3L, "title3", "description3", "location3", "url3", EventType.MISC, LocationSet.BRISTOL, "11:15", "2020-02-14", "11:45", "2020-02-14", null);
 
         List<Event> expectedEventList = new ArrayList<>();
         expectedEventList.add(event1);

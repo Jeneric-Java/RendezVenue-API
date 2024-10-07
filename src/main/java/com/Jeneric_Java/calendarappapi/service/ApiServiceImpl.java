@@ -98,6 +98,7 @@ public class ApiServiceImpl implements ApiService {
             newEvent.setStartDate(event.getStartDate());
             newEvent.setEndTime(event.getEndTime());
             newEvent.setEndDate(event.getEndDate());
+            if (event.getImageUrl() != null) newEvent.setImageUrl(event.getImageUrl());
             return eventRepository.save(newEvent);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));

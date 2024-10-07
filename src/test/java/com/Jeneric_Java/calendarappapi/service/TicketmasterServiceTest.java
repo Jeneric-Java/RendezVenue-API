@@ -67,6 +67,7 @@ class TicketmasterServiceTest {
                 "10:00:00",
                 "2024-10-01",
                 null,
+                null,
                 null);
         List<Event> expected = List.of(event, event, event);
         String expectedUri = BASE_URL + ".json?locale=en-gb&size=200" +
@@ -146,6 +147,7 @@ class TicketmasterServiceTest {
                 location,
                 "12:30:00",
                 "2024-10-10",
+                null,
                 null,
                 null);
         List<Event> expected = List.of(event, event, event);

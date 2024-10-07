@@ -47,6 +47,7 @@ class ParserTest {
                     "10:00:00",
                     "2024-10-01",
                     null,
+                    null,
                     null);
 
             Event actual = parser.parseEvent(inputEvent, inputLocation);
@@ -140,6 +141,7 @@ class ParserTest {
                     null,
                     "2024-10-01",
                     null,
+                    null,
                     null);
 
             Event expected2 = new Event(
@@ -153,6 +155,7 @@ class ParserTest {
                     "10:00:00",
                     "2024-10-01",
                     null,
+                    null,
                     null);
 
             Event expected3 = new Event(
@@ -165,6 +168,7 @@ class ParserTest {
                     LocationSet.MANCHESTER,
                     "10:00:00",
                     "2024-10-01",
+                    null,
                     null,
                     null);
 
@@ -221,8 +225,8 @@ class ParserTest {
                     new TicketmasterPage.Page(2, 2, 1, 0)
             );
 
-            Event event1 = new Event(null, "Event 1", "Event 1 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "10:00:00", "2024-10-01", null, null);
-            Event event2 = new Event(null, "Event 2", "Event 2 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "12:30:00", "2024-10-02", null, null);
+            Event event1 = new Event(null, "Event 1", "Event 1 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "10:00:00", "2024-10-01", null, null, null);
+            Event event2 = new Event(null, "Event 2", "Event 2 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "12:30:00", "2024-10-02", null, null, null);
 
             List<Event> expected = List.of(event1, event2);
 
@@ -278,8 +282,8 @@ class ParserTest {
                     null
             );
 
-            Event event1 = new Event(null, "Event 3", "Event 3 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "10:00:00", "2025-02-01", null, null);
-            Event event2 = new Event(null, "Event 4", "Event 4 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "12:30:00", "2025-02-02", null, null);
+            Event event1 = new Event(null, "Event 3", "Event 3 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "10:00:00", "2025-02-01", null, null, null);
+            Event event2 = new Event(null, "Event 4", "Event 4 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "12:30:00", "2025-02-02", null, null, null);
 
             List<Event> expected = List.of(event1, event2);
 
