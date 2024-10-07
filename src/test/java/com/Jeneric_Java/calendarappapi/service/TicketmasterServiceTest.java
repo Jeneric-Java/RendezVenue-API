@@ -117,52 +117,6 @@ class TicketmasterServiceTest {
                 () -> assertThrows(NoResultsFoundException.class, () -> service.getEventByGeoHash(location3))
         );
     }
-//
-//    @Test
-//    @DisplayName("Throws IllegalArgumentException when getEventByGeoHash called with bad geoHash")
-//    void testGetEventByGeoHashBadHash() {
-//        assertThrows(IllegalArgumentException.class, () -> service.getEventByGeoHash("this isn't a valid hash"));
-//    }
-//
-//    @Test
-//    @DisplayName("Throws IllegalArgumentException when getEventByGeoHash called with geoHash of 3 or fewer characters")
-//    void testGetEventByGeoHashSmallHash() {
-//        assertThrows(IllegalArgumentException.class, () -> service.getEventByGeoHash("no"));
-//    }
-//
-//    @Test
-//    @DisplayName("Correct list returned when getEventByGeoHash given geoHash that's longer than 9 characters")
-//    void testGetEventByGeoHashLongHash() throws JsonProcessingException, ParseException {
-//        TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(
-//                "Test",
-//                "example.com",
-//                new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
-//                new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-//                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
-//        );
-//        TicketmasterPage mockServerResult = new TicketmasterPage(
-//                new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
-//                new TicketmasterPage.Page(3, 3, 1, 0)
-//        );
-//
-//        Event event = new Event(
-//                null,
-//                "Test",
-//                "Test @ Test Arena",
-//                "M2 5PD",
-//                "example.com",
-//                EventType.MISC,
-//                null,
-//                null);
-//        List<Event> expected = List.of(event, event, event);
-//
-//        server.expect(requestTo(BASE_URL + ".json?radius=5&locale=en-gb&size=200&geoPoint=gcw2hzyup&apikey=" + secrets.getTicketmasterKey()))
-//                .andRespond(withSuccess(mapper.writeValueAsString(mockServerResult), MediaType.APPLICATION_JSON));
-//
-//        List<Event> actual = service.getEventByGeoHash("gcw2hzyupThisIsExtraText");
-//
-//        assertEquals(expected, actual);
-//    }
 
     @TestConfiguration
     static class TicketmasterServiceTestConfig{
