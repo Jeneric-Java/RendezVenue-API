@@ -70,6 +70,11 @@ public class Parser {
             throw new IllegalArgumentException("Date in illegal format!");
         }
 
+        String imageUrl = null;
+        if (input.images() != null) {
+            imageUrl = findImage(input.images());
+        }
+
         return new Event(
                 null,
                 name,
@@ -82,7 +87,7 @@ public class Parser {
                 startDate,
                 null,
                 null,
-                null
+                imageUrl
         );
     }
 
@@ -96,6 +101,21 @@ public class Parser {
             case "KZFzniwnSyZfZ7v7nn" -> EventType.FILM;
             default -> EventType.MISC;
         };
+    }
+
+    private String findImage(TicketmasterEvent.Image[] images) {
+        String url = null;
+        String backupUrl = null;
+        for (TicketmasterEvent.Image image : images) {
+            if (image.width() == 640) {
+                url = image.url();
+                break;
+            } else if (image.fallback() || image.ratio() == null) {
+                backupUrl = image.url();
+            }
+        }
+
+        return url != null ? url : backupUrl;
     }
 
     public List<Event> parsePage(TicketmasterPage input, LocationSet location) throws ParseException {
