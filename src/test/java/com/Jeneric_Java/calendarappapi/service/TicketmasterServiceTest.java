@@ -120,7 +120,7 @@ class TicketmasterServiceTest {
     }
 
     @Test
-    @DisplayName("Correct list returned when getEventByGeoHash given valid geoHash of correct length")
+    @DisplayName("Correct list returned from cache")
     void testGetEventFromCache() throws JsonProcessingException, ParseException, ExecutionException {
         LocationSet location = LocationSet.MANCHESTER;
 
@@ -139,7 +139,7 @@ class TicketmasterServiceTest {
         Event event = new Event(
                 null,
                 "Test From Cache",
-                "Test @ Test Arena",
+                "Test From Cache @ Test Arena",
                 "M2 5PD",
                 "example.com",
                 EventType.MISC,
