@@ -95,5 +95,4 @@ class ApiServiceImplTest {
         expectedEventList.add(event3);
         return expectedEventList;
     }
-
 }
