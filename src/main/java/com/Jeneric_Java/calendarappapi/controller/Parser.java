@@ -51,11 +51,24 @@ public class Parser {
             description = input.name() + " @ " + input._embedded().venues()[0].name();
         }
 
-        String startTime = (input.dates().start().localTime() != null)
-                ? input.dates().start().localTime()
-                : null;
+        String startTime;
+        if (input.dates().start().localTime() == null) {
+            startTime = null;
+        } else {
+            if (input.dates().start().localTime().matches("^\\d\\d:\\d\\d:\\d\\d$")
+                    || input.dates().start().localTime().matches("^\\d\\d:\\d\\d$")) {
+                startTime = input.dates().start().localTime();
+            } else {
+                throw new IllegalArgumentException("Time present in illegal format!");
+            }
+        }
 
-        String startDate = input.dates().start().localDate();
+        String startDate;
+        if (input.dates().start().localDate().matches("^\\d\\d\\d\\d-\\d\\d-\\d\\d$")) {
+            startDate = input.dates().start().localDate();
+        } else {
+            throw new IllegalArgumentException("Date in illegal format!");
+        }
 
         return new Event(
                 null,
