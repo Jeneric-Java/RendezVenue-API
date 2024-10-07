@@ -8,6 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
     @RestController
@@ -17,10 +25,10 @@ import java.util.List;
         @Autowired
         private ApiService apiService;
 
-        // GET all events
+        // GET all events by location
         @GetMapping()
-       public ResponseEntity<List<Event>> getAllEvents(@RequestParam String location){
-            return new ResponseEntity<>(apiService.getAllEvents(location), HttpStatus.OK);
+        public ResponseEntity<List<Event>> getEventsByLocation(@RequestParam String geoHashEnc) throws InvalidAlgorithmParameterException, IllegalBlockSizeException, NoSuchPaddingException, NoSuchAlgorithmException, BadPaddingException, InvalidKeySpecException, IOException, InvalidKeyException {
+            return new ResponseEntity<>(apiService.getEventsByLocation(geoHashEnc), HttpStatus.OK);
         }
 
         // GET event by id

@@ -1,21 +1,19 @@
 package com.Jeneric_Java.calendarappapi.model;
 
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import jakarta.persistence.*;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
-@AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 @Data
 @Setter
 @Getter
 @Entity
 @Table(name = "Events")
+@Embeddable
 public class Event implements Serializable {
 
     @Id
@@ -36,20 +34,22 @@ public class Event implements Serializable {
     @Column(name = "event_url", nullable = true)
     String url;
 
-
     @Column(name = "event_type", nullable = false)
     @Enumerated(EnumType.STRING)
     EventType type;
 
-
     @Column(name = "closest_city", nullable = false)
-    String closestCity;
+    LocationSet closestCity;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    Set<Time> times = new HashSet<>();
+    @Column(name = "start_time", nullable = true)
+    String startTime;
 
+    @Column(name = "start_date", nullable = false)
+    String startDate;
 
+    @Column(name = "end_time", nullable = true)
+    String endTime;
 
-
+    @Column(name = "end_date", nullable = true)
+    String endDate;
 }
