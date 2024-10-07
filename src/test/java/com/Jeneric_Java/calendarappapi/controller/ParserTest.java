@@ -194,62 +194,6 @@ class ParserTest {
         }
     }
 
-//    @Nested
-//    @DisplayName("Time Parser Tests")
-//    class testTimeParser {
-//
-//        @Test
-//        @DisplayName("Returns correct result when given properly formatted input")
-//        void testCorrectFormat() throws ParseException {
-//            TicketmasterEvent.Dates.Date input = new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01");
-//            Time expected = new Time(null, 2024, 10, 1, 10, 0, null);
-//
-//            Time actual = parser.parseTime(input);
-//
-//            assertEquals(expected, actual);
-//        }
-//
-//        @Test
-//        @DisplayName("Throws IllegalArgumentException when given null input")
-//        void testNullInput() {
-//            TicketmasterEvent.Dates.Date input = null;
-//
-//            assertThrows(IllegalArgumentException.class, () -> parser.parseTime(input));
-//        }
-//
-//        @Test
-//        @DisplayName("Returns result with null time fields when given input with null time")
-//        void testNullStringTime() throws ParseException {
-//            TicketmasterEvent.Dates.Date input = new TicketmasterEvent.Dates.Date(null, "2024-10-01");
-//
-//            Time expected = new Time(null, 2024, 10, 1, null, null, null);
-//
-//            Time actual = parser.parseTime(input);
-//
-//            assertEquals(expected, actual);
-//        }
-//
-//        @Test
-//        @DisplayName("Throws IllegalArgumentException when given input with null date")
-//        void testNullStringDate() {
-//            TicketmasterEvent.Dates.Date input = new TicketmasterEvent.Dates.Date("10:00:00", null);
-//
-//            assertThrows(IllegalArgumentException.class, () -> parser.parseTime(input));
-//        }
-//
-//        @Test
-//        @DisplayName("Throws ParseException when given input with invalid strings")
-//        void testBadStringInput() {
-//            TicketmasterEvent.Dates.Date input1 = new TicketmasterEvent.Dates.Date("Ten O'Clock", "2024-10-01");
-//            TicketmasterEvent.Dates.Date input2 = new TicketmasterEvent.Dates.Date("10:00:00", "The Tenth of October");
-//
-//            assertAll(
-//                    () -> assertThrows(ParseException.class, () -> parser.parseTime(input1)),
-//                    () -> assertThrows(ParseException.class, () -> parser.parseTime(input2))
-//            );
-//        }
-//    }
-
     @Nested
     @DisplayName("Page Parser Tests")
     class testPageParser {
