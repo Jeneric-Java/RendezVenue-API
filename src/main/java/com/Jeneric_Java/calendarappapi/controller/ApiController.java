@@ -37,10 +37,13 @@ import java.util.List;
             return new ResponseEntity<>(apiService.getEventByID(id), HttpStatus.OK);
         }
 
+        // DELETE event by id
         @DeleteMapping("/{id}")
         public ResponseEntity<String> deleteEventById(@PathVariable Long id){
             return new ResponseEntity<>(apiService.deleteEventById(id), HttpStatus.OK);
         }
+
+        // POST event
         @PostMapping
         public ResponseEntity<Event> addEvent(@RequestBody Event event) {
             Event newEvent  = apiService.insertEvent(event);
@@ -48,6 +51,8 @@ import java.util.List;
             httpHeaders.add("event", "/api/events/" + newEvent.getId().toString());
             return new ResponseEntity<>(newEvent, httpHeaders, HttpStatus.CREATED);
         }
+
+        // UPDATE event
         @PatchMapping("/{id}")
         public ResponseEntity<Event> updateEventById(@PathVariable("id") Long id, @RequestBody Event event) {
             return new ResponseEntity<>(apiService.updateEventById(id, event), HttpStatus.NO_CONTENT);

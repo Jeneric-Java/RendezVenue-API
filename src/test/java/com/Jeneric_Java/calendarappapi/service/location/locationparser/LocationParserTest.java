@@ -26,7 +26,7 @@ class LocationParserTest {
             BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, InvalidKeySpecException, IOException {
 
         // Arrange
-        String input = "gcw2hzwzj";
+        String input = "gcqdsf542";
         LocationParser locationParser = new LocationParser();
 
         SecretKey key = AESUtil.getKeyFromPassword();

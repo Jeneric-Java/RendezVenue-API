@@ -84,10 +84,11 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public Event updateEventById(Long id, Event event) {
-        Optional<Event> eventFromRepo = eventRepository.findById(id);
-        Event newEvent;
-        if (eventFromRepo.isPresent()) {
-            newEvent = eventFromRepo.get();
+        Optional<Event> original = eventRepository.findById(id);
+
+        if (original.isPresent()) {
+            Event newEvent = original.get();
+            newEvent.setId(event.getId());
             newEvent.setTitle(event.getTitle());
             newEvent.setDescription(event.getDescription());
             newEvent.setLocation(event.getLocation());
