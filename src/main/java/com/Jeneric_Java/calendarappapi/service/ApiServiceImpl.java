@@ -88,13 +88,16 @@ public class ApiServiceImpl implements ApiService {
 
         if (original.isPresent()) {
             Event newEvent = original.get();
-            newEvent.setId(event.getId());
             newEvent.setTitle(event.getTitle());
             newEvent.setDescription(event.getDescription());
             newEvent.setLocation(event.getLocation());
             newEvent.setClosestCity(event.getClosestCity());
             newEvent.setUrl(event.getUrl());
             newEvent.setType(event.getType());
+            newEvent.setStartTime(event.getStartTime());
+            newEvent.setStartDate(event.getStartDate());
+            newEvent.setEndTime(event.getEndTime());
+            newEvent.setEndDate(event.getEndDate());
             return eventRepository.save(newEvent);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));
