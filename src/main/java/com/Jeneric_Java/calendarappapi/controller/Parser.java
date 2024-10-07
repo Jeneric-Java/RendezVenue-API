@@ -2,6 +2,7 @@ package com.Jeneric_Java.calendarappapi.controller;
 
 import com.Jeneric_Java.calendarappapi.exception.NoResultsFoundException;
 import com.Jeneric_Java.calendarappapi.model.*;
+import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import org.springframework.stereotype.Controller;
 
 import java.text.ParseException;
@@ -11,7 +12,7 @@ import java.util.List;
 @Controller
 public class Parser {
 
-    public Event parseEvent(TicketmasterEvent input) throws ParseException {
+    public Event parseEvent(TicketmasterEvent input, LocationSet location) throws ParseException {
         if (input == null
                 || input.name() == null
                 || input.url() == null
@@ -50,11 +51,24 @@ public class Parser {
             description = input.name() + " @ " + input._embedded().venues()[0].name();
         }
 
-        String startTime = (input.dates().start().localTime() != null)
-                ? input.dates().start().localTime()
-                : null;
+        String startTime;
+        if (input.dates().start().localTime() == null) {
+            startTime = null;
+        } else {
+            if (input.dates().start().localTime().matches("^\\d\\d:\\d\\d:\\d\\d$")
+                    || input.dates().start().localTime().matches("^\\d\\d:\\d\\d$")) {
+                startTime = input.dates().start().localTime();
+            } else {
+                throw new IllegalArgumentException("Time present in illegal format!");
+            }
+        }
 
-        String startDate = input.dates().start().localDate();
+        String startDate;
+        if (input.dates().start().localDate().matches("^\\d\\d\\d\\d-\\d\\d-\\d\\d$")) {
+            startDate = input.dates().start().localDate();
+        } else {
+            throw new IllegalArgumentException("Date in illegal format!");
+        }
 
         return new Event(
                 null,
@@ -63,7 +77,7 @@ public class Parser {
                 postalCode,
                 url,
                 type,
-                null,
+                location,
                 startTime,
                 startDate,
                 null,
@@ -83,14 +97,14 @@ public class Parser {
         };
     }
 
-    public List<Event> parsePage(TicketmasterPage input) throws ParseException {
+    public List<Event> parsePage(TicketmasterPage input, LocationSet location) throws ParseException {
         if (input == null) throw new IllegalArgumentException("Page cannot be null!");
         if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
 
         ArrayList<Event> events = new ArrayList<>();
 
         for (TicketmasterEvent event : input._embedded().events()) {
-            events.add(parseEvent(event));
+            events.add(parseEvent(event, location));
         }
 
         return events;
