@@ -18,6 +18,7 @@ import org.springframework.test.web.client.MockRestServiceServer;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
@@ -116,6 +117,49 @@ class TicketmasterServiceTest {
                 () -> assertThrows(NoResultsFoundException.class, () -> service.getEventByGeoHash(location2)),
                 () -> assertThrows(NoResultsFoundException.class, () -> service.getEventByGeoHash(location3))
         );
+    }
+
+    @Test
+    @DisplayName("Correct list returned when getEventByGeoHash given valid geoHash of correct length")
+    void testGetEventFromCache() throws JsonProcessingException, ParseException, ExecutionException {
+        LocationSet location = LocationSet.MANCHESTER;
+
+        TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(
+                "Test From Cache",
+                "example.com",
+                new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("12:30:00", "2024-10-10")),
+                new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
+                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+        );
+        TicketmasterPage mockServerResult = new TicketmasterPage(
+                new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
+                new TicketmasterPage.Page(3, 3, 1, 0)
+        );
+
+        Event event = new Event(
+                null,
+                "Test From Cache",
+                "Test @ Test Arena",
+                "M2 5PD",
+                "example.com",
+                EventType.MISC,
+                location,
+                "12:30:00",
+                "2024-10-10",
+                null,
+                null);
+        List<Event> expected = List.of(event, event, event);
+        String expectedUri = BASE_URL + ".json?locale=en-gb&size=200" +
+                "&geoPoint=" + location.getGeoHash() +
+                "&radius=" + location.getRadius() +
+                "&apikey=" + secrets.getTicketmasterKey();
+
+        server.expect(requestTo(expectedUri))
+                .andRespond(withSuccess(mapper.writeValueAsString(mockServerResult), MediaType.APPLICATION_JSON));
+
+        List<Event> actual = service.getEventFromCache(location);
+
+        assertEquals(expected, actual);
     }
 
     @TestConfiguration
