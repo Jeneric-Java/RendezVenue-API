@@ -202,7 +202,7 @@ class ApiControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(updatedEvent)))
                 .andDo(print())
-                .andExpect(MockMvcResultMatchers.status().isNoContent())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(2L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("title2"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.description").value("description2"))
