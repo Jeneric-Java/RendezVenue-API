@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -41,7 +40,7 @@ class TicketmasterServiceTest {
 
     @Test
     @DisplayName("Correct list returned when getEventByGeoHash given valid geoHash of correct length")
-    void testGetEventByGeoHashAllOk() throws JsonProcessingException, ParseException {
+    void testGetEventByGeoHashAllOk() throws JsonProcessingException {
         LocationSet location = LocationSet.MANCHESTER;
 
         TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(
@@ -122,7 +121,7 @@ class TicketmasterServiceTest {
 
     @Test
     @DisplayName("Correct list returned from cache")
-    void testGetEventFromCache() throws JsonProcessingException, ParseException, ExecutionException {
+    void testGetEventFromCache() throws JsonProcessingException, ExecutionException {
         LocationSet location = LocationSet.MANCHESTER;
 
         TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(

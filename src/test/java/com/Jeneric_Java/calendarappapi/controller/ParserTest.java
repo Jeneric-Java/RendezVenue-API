@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.ParseException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,7 +25,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct result when given properly formatted input")
-        void testCorrectFormat() throws ParseException {
+        void testCorrectFormat() {
             TicketmasterEvent inputEvent = new TicketmasterEvent(
                     "Test",
                     "example.com",
@@ -103,7 +102,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Uses sensible fallbacks when given input with null fields in nested records")
-        void testNullInternalFieldsInput() throws ParseException {
+        void testNullInternalFieldsInput() {
             LocationSet inputLocation = LocationSet.MANCHESTER;
 
             TicketmasterEvent input1 = new TicketmasterEvent(
@@ -204,7 +203,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct result when given valid array of events")
-        void testValidInput() throws ParseException {
+        void testValidInput() {
             LocationSet inputLocation = LocationSet.BELFAST;
 
             TicketmasterEvent ticketmasterEvent1 = new TicketmasterEvent(
@@ -261,7 +260,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct list when given page with correct _embedded but no page info")
-        void testNoPageInfo() throws ParseException {
+        void testNoPageInfo() {
             LocationSet inputLocation = LocationSet.GLASGOW;
 
             TicketmasterEvent ticketmasterEvent1 = new TicketmasterEvent(

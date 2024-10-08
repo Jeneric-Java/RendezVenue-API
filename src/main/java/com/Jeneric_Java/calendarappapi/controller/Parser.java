@@ -5,14 +5,13 @@ import com.Jeneric_Java.calendarappapi.model.*;
 import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import org.springframework.stereotype.Controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class Parser {
 
-    public Event parseEvent(TicketmasterEvent input, LocationSet location) throws ParseException {
+    public Event parseEvent(TicketmasterEvent input, LocationSet location) {
         if (input == null
                 || input.name() == null
                 || input.url() == null
@@ -118,7 +117,7 @@ public class Parser {
         return url != null ? url : backupUrl;
     }
 
-    public List<Event> parsePage(TicketmasterPage input, LocationSet location) throws ParseException {
+    public List<Event> parsePage(TicketmasterPage input, LocationSet location) {
         if (input == null) throw new IllegalArgumentException("Page cannot be null!");
         if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
 
