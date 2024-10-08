@@ -10,8 +10,8 @@
 	</parent>
 	<groupId>com.Jeneric-Java</groupId>
 	<artifactId>calendarappapi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>Calendar App API</name>
+	<version>1.0.0-RELEASE</version>
+	<name>RendezVenue API</name>
 	<description>Spring Boot API for Event Scheduling in an Android Application</description>
 	<url/>
 	<licenses>
