@@ -48,7 +48,7 @@ class TicketmasterServiceTest {
                 "example.com",
                 new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                 new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
         );
         TicketmasterPage mockServerResult = new TicketmasterPage(
                 new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
@@ -129,7 +129,7 @@ class TicketmasterServiceTest {
                 "example.com",
                 new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("12:30:00", "2024-10-10")),
                 new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
         );
         TicketmasterPage mockServerResult = new TicketmasterPage(
                 new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
