@@ -65,6 +65,6 @@ public class ApiController {
     @PatchMapping("/{id}")
     public ResponseEntity<Event> updateEventById(@PathVariable("id") @Parameter(name = "id", description = "Id of the event to be updated") Long id,
                                                  @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Updated event to be put in the database") Event event) {
-        return new ResponseEntity<>(apiService.updateEventById(id, event), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(apiService.updateEventById(id, event), HttpStatus.OK);
     }
 }
