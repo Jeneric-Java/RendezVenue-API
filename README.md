@@ -12,6 +12,22 @@ Do you prefer working with Outlook, TimeTree, or maybe even simply Google Calend
 > 
 > The RendezVenue Android application exists in a separate repository which you can find [here](https://github.com/Jeneric-Java/RendezVenue-App-Android).
 
+## Overview
+
+
+
+RendezVenue boasts a slick UI experience, with automatic background location filtering kicking in from the get-go, granting instant access to events as far as the eye can see. Entrusting response caching and computationally-demanding processes 
+to the backend keeps the user experience uninterrupted. The frontend team have worked hard on embellishing the visuals with snappy graphics, elegantly designed, laid out, and all carefully chosen to complement the overarching theme.
+
+## Third-party Services & Caching
+
+ to a default quota of 5000 API calls per day, rate limited to 5 requests per second, and limited to 200 instances of Event per response.
+To keep compliant with the Discovery API's Terms of Service, for which there were clear stipulations on data retention, we made use of Google Guava for automatic cache management. This gave us the ability to store Ticketmaster's proprietary data, giving multiple users, within a set geographic area, the ability to retrieve content instantaneously and tailored to meet their particular search criteria. The cache is automatically cleaned when data is deemed to have grown stale; that is, where it has either gone unused for a specific length of time, or where it has existed in the cache for more than a maximum amount of time, whichever comes first. 
+
+Guava was an easy choice for this case, as it is extremely well documented and was quick to integrate into our program - a key consideration given the acute time constraints under which we were operating. 
+
+ Similarly, we had to keep compliant to their terms on data retention. This forced an immediate revision and a partial overhaul of our design for the backend. Yet we were adamant to keep using Ticketmaster. The solution: delegating automated cached management to Google Guava. It allows us to track data usage and flush stale data periodically, all the while enhancing response times on the frontend and limiting third-party requests. It felt too good to be true, but it works flawlessly; the proverbial two birds with one stone. 
+
 ## Table of Contents
 - [Usage](#Usage)
     - [JSON Structure](#JSON-Structure)
