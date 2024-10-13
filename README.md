@@ -1,8 +1,16 @@
-# 🎟️ rendezvenue-api 📆
+![xxxhdpi-logobanner@4x (1)](https://github.com/user-attachments/assets/b37adab3-b856-41fe-a1e5-6a421ade2742)
 
-## An API for our event management app. Made as part of the Northcoders Java bootcamp.
+# RendezVenue® API by Jenerics Software
+This is your new go-to app for retrieving, collecting, and curating events on the fly within an Android environment. RendezVenue simplifies the hassle of scouring event content with a targeted search functionality to get the events you want, where and when you need them.
 
-`rendezvenue-api` is an api which collates data from our events database and the Ticketmaster Discovery API for our Android app. The app lets you find events  
+Do you prefer working with Outlook, TimeTree, or maybe even simply Google Calendar? No problem, we’ve got you covered. Effortlessly synchronised to a local calendar app of your choosing, RendezVenue takes a holistic approach with full system integration.
+
+> [!NOTE]  
+> This repository, and any of the files contained within, is part of a larger project.
+>
+> This API is made in tandem with an Android frontend, providing the data and services upon which it relies.
+> 
+> The RendezVenue Android application exists in a separate repository which you can find [here](https://github.com/Jeneric-Java/RendezVenue-App-Android).
 
 ## Table of Contents
 - [Usage](#Usage)
