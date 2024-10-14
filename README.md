@@ -103,24 +103,19 @@ To filter by proximity to the user, our approach relies on repeated applications
 
 To retrieve location-specific event content, RendezVenue API at the very least needs access to the user's location for reference. Now, to provide some context, the team at Jenerics Software puts the utmost priority on preserving the confidentiality and integrity of user-sourced credentials. So the idea of transmitting sensitive user data across potentially unprotected networks was a real cause for concern. 
 
-The solution: end-to-end 256-bit AES encryption. General consensus has it that AES-256 is the absolute gold standard for encryption, so it seemed a natural choice. Fortunately, the `javax.crypto` package has a lot to offer in that regard. When a GET request is made to `/api/events` endpoint, RendezVenue API takes the `location` parameter and passes it to the LocationParser class. Here the ciphertext is transformed back to its original plaintext GeoHash pointing to the user's location at the time of request. We pass the this GeoHash string to the UserLocation class' constructor and, using the aforementioned Haversine, a comparison is made with a list of discrete enum locations, filtering down to a select few nearby locations. The means to collect, sort, and filter, Location types is provided to LocationParser by the LocationUtils class. Finally, having refined our search area, we form the requests accordingly. With these requests, we query our own PostgreSQL database instance storing user-created content, and secondly to Ticketmaster's Discovery API. 
+The solution: end-to-end 256-bit AES encryption. General consensus has it that AES-256 is the absolute gold standard for encryption, so it seemed a natural choice. Fortunately, the `javax.crypto` package has a lot to offer in that regard. When a GET request is made to `/api/events` endpoint, RendezVenue API takes the `location` parameter and passes it to the LocationParser class. Here the ciphertext is transformed back to its original plaintext GeoHash, and this should point to the user's location at the time of request. The means to collect, sort, and filter, Location types by their associated GeoHash encoding is provided to the parser by a LocationUtils class. We form the requests accordingly to query Ticketmaster's Discovery API, on one count, and our own PostgreSQL database instance storing user-created content on the other. 
 
-Symmetric
+### Generating Keys 
 
+RendezVenue handles encryption with 256-bit Secure Keys.
 
-### Specifics
-
-
-
-a key consideration given the acute time constraints under which we were operating. 
-
-
-
-
+As it currently stands, the keys are generated from a password, which is itself concatenated with a random salt. We had hoped to implement CSPRNGs to render salts less predictable, but working to a tight deadline, we are currently working from a set of precomputed values. The same can be said for the Initialisation Vector (IV) primitive which is random yet precomputed. The salt and IV are abstracted away to secure files which are, unsurprisingly, not made publically accessible. There were some bad padding errors early on. A ground-level approach to HTML formatting at the frontend seems to have played a part, although we had initially thought it an issue when encoding to base64. 
 
 > [!IMPORTANT]  
-> Crucial information necessary for users to succeed. API key
+> This is an early exploration of AES encryption fundamentals, and its integration into RendezVenue is foremost a tentative start.
 >
+> This unusually open discussion on security simply serves to document our approach. It will be heavily revised in future versions.
+
 
 ## Health Endpoint
 
