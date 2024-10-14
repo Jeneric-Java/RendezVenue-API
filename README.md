@@ -103,7 +103,9 @@ To filter by proximity to the user, our approach relies on repeated applications
 
 To retrieve location-specific event content, RendezVenue API at the very least needs access to the user's location for reference. Now, to provide some context, the team at Jenerics Software puts the utmost priority on preserving the confidentiality and integrity of user-sourced credentials. So the idea of transmitting sensitive user data across potentially unprotected networks was a real cause for concern. 
 
-The solution: End-to-end 256-bit AES encryption. General consensus has it that AES-256 is the absolute gold standard for encryption, so it seemed a natural choice. Fortunately, the `javax.crypto` package has a lot to offer in that regard. When a GET request is made to `/api/events` endpoint, RendezVenue API takes the `location` parameter and passes it to the LocationParser class.   
+The solution: end-to-end 256-bit AES encryption. General consensus has it that AES-256 is the absolute gold standard for encryption, so it seemed a natural choice. Fortunately, the `javax.crypto` package has a lot to offer in that regard. When a GET request is made to `/api/events` endpoint, RendezVenue API takes the `location` parameter and passes it to the LocationParser class. Here the ciphertext is transformed back to its original plaintext GeoHash pointing to the user's location at the time of request. We pass the this GeoHash string to the UserLocation class' constructor and, using the aforementioned Haversine, a comparison is made with a list of discrete enum locations, filtering down to a select few nearby locations. The means to collect, sort, and filter, Location types is provided to LocationParser by the LocationUtils class. Finally, having refined our search area, we form the requests accordingly. With these requests, we query our own PostgreSQL database instance storing user-created content, and secondly to Ticketmaster's Discovery API. 
+
+Symmetric
 
 
 ### Specifics
