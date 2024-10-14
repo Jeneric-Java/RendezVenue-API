@@ -14,19 +14,8 @@ Do you prefer working with Outlook, TimeTree, or maybe even simply Google Calend
 
 ## Overview
 
-
-
 RendezVenue boasts a slick UI experience, with automatic background location filtering kicking in from the get-go, granting instant access to events as far as the eye can see. Entrusting response caching and computationally-demanding processes 
 to the backend keeps the user experience uninterrupted. The frontend team have worked hard on embellishing the visuals with snappy graphics, elegantly designed, laid out, and all carefully chosen to complement the overarching theme.
-
-## Third-party Services & Caching
-
- to a default quota of 5000 API calls per day, rate limited to 5 requests per second, and limited to 200 instances of Event per response.
-To keep compliant with the Discovery API's Terms of Service, for which there were clear stipulations on data retention, we made use of Google Guava for automatic cache management. This gave us the ability to store Ticketmaster's proprietary data, giving multiple users, within a set geographic area, the ability to retrieve content instantaneously and tailored to meet their particular search criteria. The cache is automatically cleaned when data is deemed to have grown stale; that is, where it has either gone unused for a specific length of time, or where it has existed in the cache for more than a maximum amount of time, whichever comes first. 
-
-Guava was an easy choice for this case, as it is extremely well documented and was quick to integrate into our program - a key consideration given the acute time constraints under which we were operating. 
-
- Similarly, we had to keep compliant to their terms on data retention. This forced an immediate revision and a partial overhaul of our design for the backend. Yet we were adamant to keep using Ticketmaster. The solution: delegating automated cached management to Google Guava. It allows us to track data usage and flush stale data periodically, all the while enhancing response times on the frontend and limiting third-party requests. It felt too good to be true, but it works flawlessly; the proverbial two birds with one stone. 
 
 ## Table of Contents
 - [Usage](#Usage)
@@ -86,6 +75,55 @@ If successfully modifying an entry, the server will return the updated object wi
 DELETEs are requested on the `/records/{id}` endpoint, where `{id}` is the id of the entry you want to delete.
 
 If your request is successfully processed, the server will return a 200 status with a message describing the action taken. If the event is not found, a 404 will be returned.
+
+## Third-party Services & Caching
+
+### Background
+
+The RendezVenue API acts on behalf of the Android frontend to collect, filter through, and make readily available, any and all event content that it needs. This is its primary purpose, and while the user can freely access other user-created events, or even create their own, we are relying on Ticketmaster's Discovery API to furnish the 'For You' page with a more diverse and comprehensive list of events. In November 2022, Associate Professor of Economics Florian Ederer at Yale University's School of Management published an article estimating that Ticketmaster held a greater than 70% market share for ticketing and live events, marking it an unrivalled market leader. In addition to their market coverage, the Discovery API is extremely well-documented and powerful in the sense that it accepts highly-customised queries. Our decision could not have been made any easier; Ticketmaster it was to be.
+
+In its current form, this is the only external API on which RendezVenue is reliant. There are a couple of caveats, however. Firstly, there were clear stipulations on data retention in the Terms of Service. We were not to "store any Event Content other than for reasonable periods in order to provide the service you are providing." Secondly, we were working to a default quota of 5000 API calls per day, rate-limited to 5 requests per second, and limited to 200 instances of Event per response. This forced an immediate revision and a partial overhaul of our design for the backend. Yet we were adamant to keep using the Discovery API.
+
+The solution: delegating automated cached management to Google Guava. It allows us to track data usage and flush stale data periodically, all the while enhancing response times on the frontend and limiting third-party requests. It felt too good to be true, but it works flawlessly; the proverbial two birds with one stone. The cache is automatically cleaned when data is deemed to have grown stale; that is, where it has either gone unused for a specific length of time, or where it has existed in the cache for more than a maximum amount of time, whichever comes first. Either way, this continual process of reviewing and resetting the cache keeps RendezVenue invariably compliant with Ticketmaster's Terms of Service.
+
+### Specifics
+
+Cache management utilities are largely confined to the TicketmasterService class. Within it, we leverage Spring's RestClient to handle HTTP requests and responses between the Discovery and RendezVenue APIs. It is configured to work with Jackson's ObjectMapper for converting JSON to Plain Old Java Objects (POJOs).
+
+In this way, we kept compliant with Ticketmaster's ToS, 
+
+## Filtering by Location
+
+However,  limiting over-reliance on external APIs. 
+
+a key consideration given the acute time constraints under which we were operating. 
+
+Unburden the frontend
+
+Disclose in your application through a privacy policy or otherwise displayed in the footer of each page, how you collect, use, store, and disclose data collected from visitors, including, where applicable, that third parties (including advertisers) may serve content and/or advertisements and collect information directly from visitors and may place or recognize cookies on visitors’ browsers.
+
+### Security
+
+> [!IMPORTANT]  
+> Crucial information necessary for users to succeed.
+
+## FAQs
+
+**On which external APIs does RendezVenue depend?**
+
+Our ethos centres on limiting over-reliance on external APIs. We rely solely on Ticketmaster's Discovery API. 
+
+**Where can I get RendezVenue?**
+
+This is a work in progress. Please be aware that some of the critical files, upon which this app is reliant for AES encryption, will not be made available with this release. 
+
+**Is RendezVenue available in Kotlin?**
+
+Not presently. This project was foremost an exercise in developing a full-stack Android application in Java. 
+
+**How long is a piece of string?**
+
+Great question. For an empty string, about 40 bytes, I believe.
 
 
 ## Bugs and Contributions
