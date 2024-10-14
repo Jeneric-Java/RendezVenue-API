@@ -76,6 +76,9 @@ DELETEs are requested on the `/records/{id}` endpoint, where `{id}` is the id of
 
 If your request is successfully processed, the server will return a 200 status with a message describing the action taken. If the event is not found, a 404 will be returned.
 
+
+## Health Endpoint
+
 ## Third-party Services & Caching
 
 ### Background
@@ -116,8 +119,6 @@ As it currently stands, the keys are generated from a password, which is itself 
 >
 > This unusually open discussion on security simply serves to document our approach. It will be heavily revised in future versions.
 
-
-## Health Endpoint
 
 ## FAQs
 
