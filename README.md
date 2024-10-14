@@ -88,9 +88,10 @@ The solution: delegating automated cached management to Google Guava. It allows 
 
 ### Specifics
 
-Cache management utilities are largely confined to the TicketmasterService class. Within it, we leverage Spring's RestClient to handle HTTP requests and responses between the Discovery and RendezVenue APIs. It is configured to work with Jackson's ObjectMapper for converting JSON to Plain Old Java Objects (POJOs).
+Cache management utilities are largely confined to the TicketmasterService class. Within it, we leverage Spring's RestClient to handle HTTP requests and responses between the Discovery and RendezVenue APIs. It is configured to work with Jackson's ObjectMapper for converting JSON to Plain Old Java Objects (POJOs). We use a StringBuilder class to structure the URI, and thus form the parametrised query that Ticketmaster expects, and that which also satisfies user preferences at the frontend. It is this query that we pass on to RestClient. Once deserialised to a TicketmasterPage record, the response body is read by a parser class and events sorted to the nearest geographic centre. 
 
-In this way, we kept compliant with Ticketmaster's ToS, 
+Instantiation of the TicketmasterService class not only sets the client and parser members, but also calls upon Guava's CacheLoader, CacheBuilder, and LoadingCache classes to set a cache and write to it new event content, ordered by location. Two inner classes inherit from the TimerTask utility class; they are called upon within the constructor to the TicketmasterService class, and are called again at fixed intervals to separately clean and invalidate the cache. These inner classes are called by an instance of class Timer. To ensure that the scheduling of cache maintenance activities is ongoing for as long as the application is running, but that this does not prolong the application lifetime unnecessarily, we are running the Timer as a Daemon. In its current state, RendezVenue API executes cache cleaning after five minutes, and periodically at minute intervals thereafter. Invalidation of all cached content occurs at 50 minute intervals to ensure that frequent user activity and requests do not persist cached data for an unreasonable length of time, and further guards against overloading of cache memory.  
+
 
 ## Filtering by Location
 
@@ -105,7 +106,7 @@ Disclose in your application through a privacy policy or otherwise displayed in 
 ### Security
 
 > [!IMPORTANT]  
-> Crucial information necessary for users to succeed.
+> Crucial information necessary for users to succeed. API key
 
 ## FAQs
 
