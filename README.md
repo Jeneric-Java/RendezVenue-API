@@ -52,7 +52,7 @@ Values for `closestCity`: `[ MANCHESTER, LONDON, LIVERPOOL, BIRMINGHAM, EDINBURG
 
 ### GET Requests
 A GET made to the `/api/events` endpoint will retrieve a list of all events in the nearest supported city to the given location.
-Locations are given as geo-hashes which are encrypted with AES Symmetric Encryption. This means that the front and backend need to be initialized with the same information for requests to be accepted. This is to ensure the security of user location information.
+The `location` request parameter is passed as a GeoHash which is, by default, AES-256 encrypted. This means that the front and backend need to be initialized with the same information for requests to be accepted. This is to ensure the security of user location information.
 
 Example usage: `/api/events?geoHashEnc=<ENCRYPTED HASH>`. This will return a list of event objects and a 200 status if successful, or a 404 if no events can be found for the search term.
 
@@ -95,18 +95,32 @@ Instantiation of the TicketmasterService class not only sets the client and pars
 
 ## Filtering by Location
 
-However,  limiting over-reliance on external APIs. 
+### Background
+
+To filter by proximity to the user, our approach relies on repeated applications of the Haversine formula to calculate the arc distance along a geodesic given the point latitudes and longitudes. All locations are encoded to a GeoHash format, which is made necessary by the very fact that Ticketmaster have announced that the traditional latitude and longitude pairs are soon to be deprecated in favour of GeoHashes. For converting between the two formats, we have made use of the ElasticSearch Geometry module. Filtering by location is entirely confined to the backend because these kind of operations on many thousands of GCS tuple combinations can be computationally demanding, and we sincerely wish not to overburden the frontend.
+
+### The Problem
+
+To retrieve location-specific event content, RendezVenue API at the very least needs access to the user's location for reference. Now, to provide some context, the team at Jenerics Software puts the utmost priority on preserving the confidentiality and integrity of user-sourced credentials. So the idea of transmitting sensitive user data across potentially unprotected networks was a real cause for concern. 
+
+The solution: End-to-end 256-bit AES encryption. General consensus has it that AES-256 is the absolute gold standard for encryption, so it seemed a natural choice. Fortunately, the `javax.crypto` package has a lot to offer in that regard. When a GET request is made to `/api/events` endpoint, RendezVenue API takes the `location` parameter and passes it to the LocationParser class.   
+
+
+### Specifics
+
+
 
 a key consideration given the acute time constraints under which we were operating. 
 
-Unburden the frontend
 
-Disclose in your application through a privacy policy or otherwise displayed in the footer of each page, how you collect, use, store, and disclose data collected from visitors, including, where applicable, that third parties (including advertisers) may serve content and/or advertisements and collect information directly from visitors and may place or recognize cookies on visitors’ browsers.
 
-### Security
+
 
 > [!IMPORTANT]  
 > Crucial information necessary for users to succeed. API key
+>
+
+## Health Endpoint
 
 ## FAQs
 
