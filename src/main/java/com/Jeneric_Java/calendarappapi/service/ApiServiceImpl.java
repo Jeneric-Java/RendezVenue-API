@@ -84,16 +84,21 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public Event updateEventById(Long id, Event event) {
-        Optional<Event> eventFromRepo = eventRepository.findById(id);
-        Event newEvent;
-        if (eventFromRepo.isPresent()) {
-            newEvent = eventFromRepo.get();
+        Optional<Event> original = eventRepository.findById(id);
+
+        if (original.isPresent()) {
+            Event newEvent = original.get();
             newEvent.setTitle(event.getTitle());
             newEvent.setDescription(event.getDescription());
             newEvent.setLocation(event.getLocation());
             newEvent.setClosestCity(event.getClosestCity());
             newEvent.setUrl(event.getUrl());
             newEvent.setType(event.getType());
+            newEvent.setStartTime(event.getStartTime());
+            newEvent.setStartDate(event.getStartDate());
+            newEvent.setEndTime(event.getEndTime());
+            newEvent.setEndDate(event.getEndDate());
+            if (event.getImageUrl() != null) newEvent.setImageUrl(event.getImageUrl());
             return eventRepository.save(newEvent);
         } else {
             throw new NoResultsFoundException(String.format("An event with id '%s' cannot be located.", id));

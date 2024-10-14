@@ -5,14 +5,13 @@ import com.Jeneric_Java.calendarappapi.model.*;
 import com.Jeneric_Java.calendarappapi.service.location.utilities.LocationSet;
 import org.springframework.stereotype.Controller;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class Parser {
 
-    public Event parseEvent(TicketmasterEvent input, LocationSet location) throws ParseException {
+    public Event parseEvent(TicketmasterEvent input, LocationSet location) {
         if (input == null
                 || input.name() == null
                 || input.url() == null
@@ -70,6 +69,11 @@ public class Parser {
             throw new IllegalArgumentException("Date in illegal format!");
         }
 
+        String imageUrl = null;
+        if (input.images() != null) {
+            imageUrl = findImage(input.images());
+        }
+
         return new Event(
                 null,
                 name,
@@ -81,7 +85,8 @@ public class Parser {
                 startTime,
                 startDate,
                 null,
-                null
+                null,
+                imageUrl
         );
     }
 
@@ -97,7 +102,22 @@ public class Parser {
         };
     }
 
-    public List<Event> parsePage(TicketmasterPage input, LocationSet location) throws ParseException {
+    private String findImage(TicketmasterEvent.Image[] images) {
+        String url = null;
+        String backupUrl = null;
+        for (TicketmasterEvent.Image image : images) {
+            if (image.width() == 640) {
+                url = image.url();
+                break;
+            } else if (image.fallback() || image.ratio() == null) {
+                backupUrl = image.url();
+            }
+        }
+
+        return url != null ? url : backupUrl;
+    }
+
+    public List<Event> parsePage(TicketmasterPage input, LocationSet location) {
         if (input == null) throw new IllegalArgumentException("Page cannot be null!");
         if (input._embedded() == null || input._embedded().events() == null || input._embedded().events().length == 0) throw new NoResultsFoundException("No results in given page!");
 

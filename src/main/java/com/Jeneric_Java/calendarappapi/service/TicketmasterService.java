@@ -18,7 +18,6 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -61,7 +60,7 @@ public class TicketmasterService {
         return eventCache.get(location);
     }
 
-    public List<Event> getEventByGeoHash(LocationSet location) throws ParseException {
+    public List<Event> getEventByGeoHash(LocationSet location) {
         String geoHash = location.getGeoHash();
 
         StringBuilder uriBuilder = new StringBuilder(".json?locale=en-gb&size=200");

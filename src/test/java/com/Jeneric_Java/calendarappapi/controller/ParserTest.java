@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.ParseException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -26,13 +25,13 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct result when given properly formatted input")
-        void testCorrectFormat() throws ParseException {
+        void testCorrectFormat() {
             TicketmasterEvent inputEvent = new TicketmasterEvent(
                     "Test",
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
             );
             LocationSet inputLocation = LocationSet.MANCHESTER;
 
@@ -46,6 +45,7 @@ class ParserTest {
                     LocationSet.MANCHESTER,
                     "10:00:00",
                     "2024-10-01",
+                    null,
                     null,
                     null);
 
@@ -71,19 +71,19 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}), null);
             TicketmasterEvent input2 = new TicketmasterEvent(
                     "Test",
                     null,
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}), null);
             TicketmasterEvent input3 = new TicketmasterEvent(
                     "Test",
                     "example.com",
                     null,
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}), null);
 
             assertAll(
                     () -> assertThrows(IllegalArgumentException.class, () -> parser.parseEvent(input1, null)),
@@ -95,14 +95,14 @@ class ParserTest {
         @Test
         @DisplayName("Doesn't throw exception when given input with dates (but not times), classifications, or _embedded as null")
         void testNullFieldsInputWhenShouldStillPass() {
-            TicketmasterEvent input = new TicketmasterEvent("Test", "Test", new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date(null, "2024-10-01")), null, null);
+            TicketmasterEvent input = new TicketmasterEvent("Test", "Test", new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date(null, "2024-10-01")), null, null, null);
 
             assertDoesNotThrow(() -> parser.parseEvent(input, null));
         }
 
         @Test
         @DisplayName("Uses sensible fallbacks when given input with null fields in nested records")
-        void testNullInternalFieldsInput() throws ParseException {
+        void testNullInternalFieldsInput() {
             LocationSet inputLocation = LocationSet.MANCHESTER;
 
             TicketmasterEvent input1 = new TicketmasterEvent(
@@ -110,7 +110,7 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date(null, "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
             );
 
             TicketmasterEvent input2 = new TicketmasterEvent(
@@ -118,7 +118,7 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(null)},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
             );
 
             TicketmasterEvent input3 = new TicketmasterEvent(
@@ -126,7 +126,7 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{})
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{}), null
             );
 
             Event expected1 = new Event(
@@ -139,6 +139,7 @@ class ParserTest {
                     LocationSet.MANCHESTER,
                     null,
                     "2024-10-01",
+                    null,
                     null,
                     null);
 
@@ -153,6 +154,7 @@ class ParserTest {
                     "10:00:00",
                     "2024-10-01",
                     null,
+                    null,
                     null);
 
             Event expected3 = new Event(
@@ -165,6 +167,7 @@ class ParserTest {
                     LocationSet.MANCHESTER,
                     "10:00:00",
                     "2024-10-01",
+                    null,
                     null,
                     null);
 
@@ -187,7 +190,7 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("Ten O'Clock", "The Tenth of October")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("M2 5PD", "Test Arena")})
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("M2 5PD", "Test Arena")}), null
             );
 
             assertThrows(IllegalArgumentException.class, () -> parser.parseEvent(input, null));
@@ -200,7 +203,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct result when given valid array of events")
-        void testValidInput() throws ParseException {
+        void testValidInput() {
             LocationSet inputLocation = LocationSet.BELFAST;
 
             TicketmasterEvent ticketmasterEvent1 = new TicketmasterEvent(
@@ -208,21 +211,21 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null);
             TicketmasterEvent ticketmasterEvent2 = new TicketmasterEvent(
                     "Event 2",
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("12:30:00", "2024-10-02")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null);
 
             TicketmasterPage input = new TicketmasterPage(
                     new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent1, ticketmasterEvent2}),
                     new TicketmasterPage.Page(2, 2, 1, 0)
             );
 
-            Event event1 = new Event(null, "Event 1", "Event 1 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "10:00:00", "2024-10-01", null, null);
-            Event event2 = new Event(null, "Event 2", "Event 2 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "12:30:00", "2024-10-02", null, null);
+            Event event1 = new Event(null, "Event 1", "Event 1 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "10:00:00", "2024-10-01", null, null, null);
+            Event event2 = new Event(null, "Event 2", "Event 2 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.BELFAST, "12:30:00", "2024-10-02", null, null, null);
 
             List<Event> expected = List.of(event1, event2);
 
@@ -257,7 +260,7 @@ class ParserTest {
 
         @Test
         @DisplayName("Returns correct list when given page with correct _embedded but no page info")
-        void testNoPageInfo() throws ParseException {
+        void testNoPageInfo() {
             LocationSet inputLocation = LocationSet.GLASGOW;
 
             TicketmasterEvent ticketmasterEvent1 = new TicketmasterEvent(
@@ -265,21 +268,21 @@ class ParserTest {
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2025-02-01")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null);
             TicketmasterEvent ticketmasterEvent2 = new TicketmasterEvent(
                     "Event 4",
                     "example.com",
                     new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("12:30:00", "2025-02-02")),
                     new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}));
+                    new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null);
 
             TicketmasterPage input = new TicketmasterPage(
                     new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent1, ticketmasterEvent2}),
                     null
             );
 
-            Event event1 = new Event(null, "Event 3", "Event 3 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "10:00:00", "2025-02-01", null, null);
-            Event event2 = new Event(null, "Event 4", "Event 4 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "12:30:00", "2025-02-02", null, null);
+            Event event1 = new Event(null, "Event 3", "Event 3 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "10:00:00", "2025-02-01", null, null, null);
+            Event event2 = new Event(null, "Event 4", "Event 4 @ Test Arena", "M2 5PD", "example.com", EventType.MISC, LocationSet.GLASGOW, "12:30:00", "2025-02-02", null, null, null);
 
             List<Event> expected = List.of(event1, event2);
 

@@ -23,13 +23,14 @@ public class AESUtil {
     protected static String encrypt(String algorithm, String input, SecretKey key,
                                  IvParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException,
             InvalidAlgorithmParameterException, InvalidKeyException,
-            BadPaddingException, IllegalBlockSizeException {
+            BadPaddingException, IllegalBlockSizeException, UnsupportedEncodingException {
+
+        input = HtmlUtils.htmlEscape(input);
 
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.ENCRYPT_MODE, key, iv);
         byte[] cipherText = cipher.doFinal(input.getBytes());
-        return Base64.getEncoder()
-                .encodeToString(cipherText);
+        return Base64.getMimeEncoder().encodeToString(cipherText);
     }
 
     protected static String decrypt(String algorithm, String cipherText, SecretKey key,
@@ -39,20 +40,10 @@ public class AESUtil {
 
         cipherText = HtmlUtils.htmlUnescape(cipherText);
 
-//        byte[] byte24 = Base64.getMimeDecoder()
-//                .decode(cipherText);
-//
-//        byte[] byte16 = new byte[16];
-//
-//        for (int i = 0; i < 16; i++) {
-//            byte16[i] = byte24[i];
-//        }
-
         Cipher cipher = Cipher.getInstance(algorithm);
         cipher.init(Cipher.DECRYPT_MODE, key, iv);
 
-        byte[] plainText = cipher.doFinal(Base64.getMimeDecoder()
-                .decode(cipherText));
+        byte[] plainText = cipher.doFinal(Base64.getMimeDecoder().decode(cipherText));
         return new String(plainText);
     }
 
@@ -116,7 +107,4 @@ public class AESUtil {
 
         return credentials;
     }
-
-
-
 }

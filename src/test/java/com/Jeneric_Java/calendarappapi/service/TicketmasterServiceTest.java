@@ -16,7 +16,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -41,7 +40,7 @@ class TicketmasterServiceTest {
 
     @Test
     @DisplayName("Correct list returned when getEventByGeoHash given valid geoHash of correct length")
-    void testGetEventByGeoHashAllOk() throws JsonProcessingException, ParseException {
+    void testGetEventByGeoHashAllOk() throws JsonProcessingException {
         LocationSet location = LocationSet.MANCHESTER;
 
         TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(
@@ -49,7 +48,7 @@ class TicketmasterServiceTest {
                 "example.com",
                 new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("10:00:00", "2024-10-01")),
                 new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
         );
         TicketmasterPage mockServerResult = new TicketmasterPage(
                 new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
@@ -66,6 +65,7 @@ class TicketmasterServiceTest {
                 location,
                 "10:00:00",
                 "2024-10-01",
+                null,
                 null,
                 null);
         List<Event> expected = List.of(event, event, event);
@@ -120,8 +120,8 @@ class TicketmasterServiceTest {
     }
 
     @Test
-    @DisplayName("Correct list returned when getEventByGeoHash given valid geoHash of correct length")
-    void testGetEventFromCache() throws JsonProcessingException, ParseException, ExecutionException {
+    @DisplayName("Correct list returned from cache")
+    void testGetEventFromCache() throws JsonProcessingException, ExecutionException {
         LocationSet location = LocationSet.MANCHESTER;
 
         TicketmasterEvent ticketmasterEvent = new TicketmasterEvent(
@@ -129,7 +129,7 @@ class TicketmasterServiceTest {
                 "example.com",
                 new TicketmasterEvent.Dates(new TicketmasterEvent.Dates.Date("12:30:00", "2024-10-10")),
                 new TicketmasterEvent.Classifications[]{new TicketmasterEvent.Classifications(new TicketmasterEvent.Classifications.Segment("KZFzniwnSyZfZ7v7n1"))},
-                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")})
+                new TicketmasterEvent.Embedded(new TicketmasterEvent.Embedded.Venue[]{new TicketmasterEvent.Embedded.Venue("Test Arena", "M2 5PD")}), null
         );
         TicketmasterPage mockServerResult = new TicketmasterPage(
                 new TicketmasterPage.Embedded(new TicketmasterEvent[]{ticketmasterEvent, ticketmasterEvent, ticketmasterEvent}),
@@ -139,13 +139,14 @@ class TicketmasterServiceTest {
         Event event = new Event(
                 null,
                 "Test From Cache",
-                "Test @ Test Arena",
+                "Test From Cache @ Test Arena",
                 "M2 5PD",
                 "example.com",
                 EventType.MISC,
                 location,
                 "12:30:00",
                 "2024-10-10",
+                null,
                 null,
                 null);
         List<Event> expected = List.of(event, event, event);

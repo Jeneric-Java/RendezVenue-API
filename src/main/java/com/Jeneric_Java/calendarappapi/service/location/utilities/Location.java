@@ -42,8 +42,6 @@ public class Location {
         this.latitude = String.valueOf(Geohash.decodeLatitude(geoHash));
         this.longitude = String.valueOf(Geohash.decodeLongitude(geoHash));
 
-//        this.closestCity = assignCityByGeoHash.apply(geoHash);
-
         this.closestCity = "Manchester";
 
         this.locationId = atomicInteger.getAndIncrement();
