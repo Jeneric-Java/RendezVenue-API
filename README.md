@@ -18,18 +18,26 @@ RendezVenue boasts a slick UI experience, with automatic background location fil
 to the backend keeps the user experience uninterrupted. The frontend team have worked hard on embellishing the visuals with snappy graphics, elegantly designed, laid out, and all carefully chosen to complement the overarching theme.
 
 ## Table of Contents
-- [Usage](#Usage)
-    - [JSON Structure](#JSON-Structure)
-    - [GET Requests](#GET-Requests)
-    - [POST Requests](#POST-Requests)
-    - [PUT Requests](#PUT-Requests)
-    - [DELETE Requests](#DELETE-Requests)
-- [Bugs and Contributions](#Bugs-and-Contributions)
-
+- [Usage](#usage)
+    - [JSON Structure](#json-structure)
+    - [GET Requests](#get-requests)
+    - [POST Requests](#post-requests)
+    - [PUT Requests](#put-requests)
+    - [DELETE Requests](#delete-requests)
+- [Third-party Services & Caching](#third-party-services--caching)
+    - [Background](#background)
+    - [Specifics](#specifics)
+- [Filtering by Location](#filtering-by-location)
+    - [Background](#background)
+    - [The Problem](#the-problem)
+    - [Generating Keys](#generating-keys)
+- [Future Considerations](#future-considerations)
+- [FAQs](#faqs)
+- [Bugs and Contributions](#bugs-and-contributions)
 
 ## Usage
 ### JSON Structure
-Your requests should use the event JSON structure, an event looks like this:
+Your requests should use the event JSON structure. An event looks like this:
 ```
 {
     "id": integer,
@@ -56,7 +64,7 @@ The `location` request parameter is passed as a GeoHash which is, by default, AE
 
 Example usage: `/api/events?geoHashEnc=<ENCRYPTED HASH>`. This will return a list of event objects and a 200 status if successful, or a 404 if no events can be found for the search term.
 
-A GET made to the `/health` endpoint will give you information on the status of the program.
+Provided to us as part of Spring Boot Actuator are a list of endpoints. A GET requests made to the `/health` endpoint will give you information on the status of the program.
 
 ### POST Requests
 
@@ -75,9 +83,6 @@ If successfully modifying an entry, the server will return the updated object wi
 DELETEs are requested on the `/records/{id}` endpoint, where `{id}` is the id of the entry you want to delete.
 
 If your request is successfully processed, the server will return a 200 status with a message describing the action taken. If the event is not found, a 404 will be returned.
-
-
-## Health Endpoint
 
 ## Third-party Services & Caching
 
@@ -119,6 +124,13 @@ As it currently stands, the keys are generated from a password, which is itself 
 >
 > This unusually open discussion on security simply serves to document our approach. It will be heavily revised in future versions.
 
+## Future Considerations
+- Automatic filtering of user-created events deemed controversial, overtly provocative, politically-insensitive, or in direct contravention of laws within their local jurisdiction.
+- Establishing a new Event Manager role with elevated permissions and separate from the default user profile.
+- Third-party authentication to guard against unauthorised access or modifications to other user-created content,
+- Expanding coverage of edge cases in testing.
+- Refining search functionalities for snappier response times and better targeting of content specific to the user's location.
+- Greater variability on endpoint parameters for flexibility in filtering event content by type, genre, date, artist etc.
 
 ## FAQs
 
@@ -138,9 +150,8 @@ Not presently. This project was foremost an exercise in developing a full-stack 
 
 Great question. For an empty string, about 40 bytes, I believe.
 
-
 ## Bugs and Contributions
 
-If you find any bugs, please create an issue on the issues page of this repo.
+If you find any bugs, please create an issue on the issues page of this repository.
 
-As this project was made as part of a bootcamp, we don't plan on accepting any contributions to the code at this time.
+As this project is exclusive to the team at Jenerics Software, we don't plan on accepting any external contributions at this time.
